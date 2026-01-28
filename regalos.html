@@ -23,56 +23,26 @@
             font-family: 'Lato', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            text-align: center; /* Alineación global centrada */
+            text-align: center;
             padding: 20px 0 60px;
             overflow-x: hidden;
         }
         .container-narrow {
             max-width: 600px;
-            margin: 0 auto; /* Centrar el contenedor en la página */
+            margin: 0 auto;
             padding: 0 20px;
         }
         
-        h1 { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 2.5rem; 
-            margin-bottom: 10px; 
-            margin-top: 20px; 
-            text-align: center;
-        }
-        h2 { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 1.8rem; 
-            margin: 40px 0 20px; 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            text-align: center;
-        }
-        .subtitle { 
-            font-size: 1rem; 
-            color: var(--text-light); 
-            margin-bottom: 30px; 
-            line-height: 1.6; 
-            font-weight: 300;
-            text-align: center;
-        }
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px; margin-top: 20px; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 40px 0 20px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { font-size: 1rem; color: var(--text-light); margin-bottom: 30px; line-height: 1.6; font-weight: 300; }
 
         /* --- BOTÓN REGRESAR --- */
         .btn-back-top {
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center;
-            background-color: #f5f5f5; 
-            color: var(--text-main); 
-            text-decoration: none;
-            padding: 10px 20px; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            font-size: 0.9rem;
-            margin-bottom: 20px; 
-            transition: all 0.3s ease; 
-            border: 1px solid #e0e0e0;
+            display: inline-flex; align-items: center; justify-content: center;
+            background-color: #f5f5f5; color: var(--text-main); text-decoration: none;
+            padding: 10px 20px; border-radius: 50px; font-weight: bold; font-size: 0.9rem;
+            margin-bottom: 20px; transition: all 0.3s ease; border: 1px solid #e0e0e0;
         }
         .btn-back-top:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-back-top span { margin-right: 8px; font-size: 1.2rem; }
@@ -80,72 +50,69 @@
         /* --- TARJETAS DE TALLAS (ROPA) --- */
         .sizes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Adaptable */
+            /* 2 columnas automáticas para que sean 4 cuadros */
+            grid-template-columns: repeat(2, 1fr); 
             gap: 15px;
             margin-bottom: 30px;
-            justify-content: center; /* Centrar items */
+            justify-content: center;
         }
         .size-card {
             background: #fafafa;
             border: 1px solid #eee;
             border-radius: 12px;
             padding: 20px 10px;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; /* Centrar contenido verticalmente */
-            text-align: center;  /* Centrar texto */
+            display: flex; flex-direction: column; align-items: center; text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .size-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        
+        /* TRUCO PARA CAMBIAR COLOR A LOS EMOJIS */
+        .icon-blue { filter: hue-rotate(0deg); }
+        .icon-red { filter: hue-rotate(140deg); } /* Cambia azul a rojo/rosa */
+        .icon-green { filter: hue-rotate(260deg); } /* Cambia azul a amarillo/verde */
+        .icon-grey { filter: grayscale(100%); } /* Blanco y negro */
+
         .size-label { font-weight: bold; color: var(--gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
-        .size-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-main); margin-top: 5px; font-weight: bold; }
+        .size-value { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text-main); margin-top: 5px; font-weight: bold; }
 
         /* --- GRID DE REGALOS --- */
         .gifts-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Móvil: 1 columna */
+            grid-template-columns: 1fr;
             gap: 25px;
-            justify-items: center; /* Centrar las tarjetas en el grid */
+            justify-items: center;
         }
         @media (min-width: 600px) {
-            .gifts-grid { grid-template-columns: repeat(2, 1fr); } /* PC: 2 columnas */
+            .gifts-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         .gift-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-            transition: transform 0.2s;
-            width: 100%; /* Ocupar el espacio asignado */
-            max-width: 350px; /* No hacerse gigante */
-            display: flex;
-            flex-direction: column;
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #eee;
+            transition: transform 0.2s; width: 100%; max-width: 350px;
+            display: flex; flex-direction: column;
         }
         .gift-card:hover { transform: translateY(-5px); }
         
         .gift-img {
-            width: 100%; 
-            height: 200px; 
-            object-fit: cover;
+            width: 100%; height: 200px; object-fit: cover;
             border-bottom: 1px solid #f0f0f0;
         }
         
-        /* CORRECCIÓN DE ALINEACIÓN DE TEXTO */
         .gift-content { 
-            padding: 25px 20px; 
-            text-align: center; /* TODO CENTRADO */
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            padding: 25px 20px; text-align: center;
+            flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;
         }
         
         .gift-title { font-weight: bold; font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main); }
         .gift-desc { font-size: 0.95rem; color: #777; margin-bottom: 20px; line-height: 1.5; }
         
-        /* Botones de acción */
+        .gift-status {
+            font-size: 0.8rem; color: #999; font-style: italic; border-top: 1px solid #eee;
+            padding-top: 10px; margin-top: auto;
+        }
+
+        /* Botón de acción (Solo para apartar) */
         .btn-reserve {
             display: block; width: 100%; text-align: center;
             background: var(--gold); color: white;
@@ -155,20 +122,12 @@
             box-shadow: 0 4px 10px rgba(197, 160, 89, 0.3);
         }
         .btn-reserve:hover { background: #b08d48; }
-        
-        .btn-secondary {
-            display: block; width: 100%; text-align: center;
-            background: #f5f5f5; color: #888;
-            text-decoration: none; padding: 12px; border-radius: 50px;
-            font-weight: bold; font-size: 0.85rem;
-            border: 1px solid #ddd;
-        }
 
         .note-box {
             background: #fffdf5; border: 1px solid var(--gold);
             padding: 15px; border-radius: 8px; margin: 20px auto;
             font-size: 0.95rem; color: #5d4037;
-            max-width: 500px; /* Centrado y no muy ancho */
+            max-width: 500px;
         }
 
     </style>
@@ -185,26 +144,35 @@
             Su presencia es lo más importante. Pero si gustan tener un detalle, aquí les dejo algunas ideas.
         </p>
 
-        <h2>👖 Ropa y Tallas</h2>
+        <h2>Ropa y Tallas</h2>
         <div class="note-box">
             "En colores no tengo problema, ¡me gustan todos!"
         </div>
 
         <div class="sizes-grid">
             <div class="size-card">
-                <div class="size-icon">👖</div>
+                <div class="size-icon icon-blue">👖</div>
                 <div class="size-label">Pantalón (Jeans)</div>
                 <div class="size-value">34</div>
             </div>
+            
             <div class="size-card">
-                <div class="size-icon">👕</div>
+                <div class="size-icon icon-red">👕</div>
                 <div class="size-label">Playeras / Camisas</div>
                 <div class="size-value">M</div>
                 <span style="font-size:0.8rem; color:#999;">(Mediana)</span>
             </div>
+            
             <div class="size-card">
+                <div class="size-icon icon-green">🧥</div> 
+                <div class="size-label">Suéteres / Sudaderas</div>
+                <div class="size-value">L</div>
+                <span style="font-size:0.8rem; color:#999;">(Grande)</span>
+            </div>
+
+             <div class="size-card">
                 <div class="size-icon">🧥</div>
-                <div class="size-label">Sudaderas / Chamarras</div>
+                <div class="size-label">Chamarras</div>
                 <div class="size-value">L</div>
                 <span style="font-size:0.8rem; color:#999;">(Grande)</span>
             </div>
@@ -219,15 +187,15 @@
                 <div class="gift-content">
                     <div class="gift-title">Para el Brindis</div>
                     <div class="gift-desc">Me gusta el Tequila, el Brandy y los Licores en general.</div>
-                    <div class="btn-secondary">¡Excelente opción!</div>
+                    <div class="gift-status">Regalo libre (No se repite)</div>
                 </div>
             </div>
             <div class="gift-card">
-                <img src="https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Lociones">
+                <img src="https://images.unsplash.com/photo-1523293188086-b46e0a804130?w=600&auto=format&fit=crop&q=60" class="gift-img" alt="Lociones">
                 <div class="gift-content">
                     <div class="gift-title">Lociones</div>
                     <div class="gift-desc">Una buena loción siempre cae bien para oler rico.</div>
-                    <div class="btn-secondary">¡Excelente opción!</div>
+                    <div class="gift-status">Regalo libre (No se repite)</div>
                 </div>
             </div>
         </div>
@@ -240,21 +208,22 @@
         <div class="gifts-grid">
             
             <div class="gift-card">
-                <img src="https://images.pexels.com/photos/63703/pexels-photo-63703.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Sonido">
+                <img src="https://images.unsplash.com/photo-1574377586871-339815797d41?w=600&auto=format&fit=crop&q=60" class="gift-img" alt="Sonido">
                 <div class="gift-content">
                     <div class="gift-title">Barra de Sonido</div>
-                    <div class="gift-desc">Quiero una para poner música a todo volumen (pero solo necesito una, jaja).</div>
+                    <div class="gift-desc">Una barra horizontal para la TV. Solo necesito una para poner música.</div>
                     <a href="#" onclick="apartarRegalo('Barra de Sonido')" class="btn-reserve">📲 Apartar Regalo</a>
                 </div>
             </div>
 
             <div class="gift-card">
-                <img src="https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Herramienta">
+                <img src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=600&auto=format&fit=crop&q=60" class="gift-img" alt="Herramienta">
                 <div class="gift-content">
                     <div class="gift-title">DeWalt Inalámbricos (20V)</div>
                     <div class="gift-desc">
-                        Busco herramientas compatibles con pila de 20V.<br>
-                        <span style="font-size: 0.85rem; color: #d32f2f;">(Ya tengo Rotomartillo e Impacto. Cualquier otra es bienvenida).</span>
+                        Busco herramientas como esmeriladora, sierra circular o atornillador.
+                        <br><br>
+                        <span style="font-size: 0.85rem; color: #d32f2f;">(NO Rotomartillo ni Impacto, esos ya los tengo).</span>
                     </div>
                     <a href="#" onclick="apartarRegalo('Herramienta DeWalt')" class="btn-reserve">📲 Apartar Regalo</a>
                 </div>
@@ -265,7 +234,7 @@
                 <div class="gift-content">
                     <div class="gift-title">Herramientas en General</div>
                     <div class="gift-desc">Si ves alguna herramienta manual curiosa o útil, seguro me sirve para la colección.</div>
-                    <div class="btn-secondary">No requiere apartado</div>
+                    <div class="gift-status">Regalo libre</div>
                 </div>
             </div>
 
