@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- ESTILOS BASE (Iguales al Index) --- */
+        /* --- ESTILOS BASE --- */
         :root {
             --bg-color: #ffffff;
             --text-main: #333333;
@@ -23,54 +23,92 @@
             font-family: 'Lato', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            text-align: center;
-            padding: 20px 0 40px;
+            text-align: center; /* Alineación global centrada */
+            padding: 20px 0 60px;
             overflow-x: hidden;
         }
         .container-narrow {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto; /* Centrar el contenedor en la página */
             padding: 0 20px;
         }
-        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px; margin-top: 20px; }
-        h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 40px 0 20px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { font-size: 1rem; color: var(--text-light); margin-bottom: 30px; line-height: 1.6; font-weight: 300; }
+        
+        h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2.5rem; 
+            margin-bottom: 10px; 
+            margin-top: 20px; 
+            text-align: center;
+        }
+        h2 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.8rem; 
+            margin: 40px 0 20px; 
+            color: var(--gold); 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        .subtitle { 
+            font-size: 1rem; 
+            color: var(--text-light); 
+            margin-bottom: 30px; 
+            line-height: 1.6; 
+            font-weight: 300;
+            text-align: center;
+        }
 
         /* --- BOTÓN REGRESAR --- */
         .btn-back-top {
-            display: inline-flex; align-items: center; justify-content: center;
-            background-color: #f5f5f5; color: var(--text-main); text-decoration: none;
-            padding: 10px 20px; border-radius: 50px; font-weight: bold; font-size: 0.9rem;
-            margin-bottom: 20px; transition: all 0.3s ease; border: 1px solid #e0e0e0;
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            background-color: #f5f5f5; 
+            color: var(--text-main); 
+            text-decoration: none;
+            padding: 10px 20px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 0.9rem;
+            margin-bottom: 20px; 
+            transition: all 0.3s ease; 
+            border: 1px solid #e0e0e0;
         }
+        .btn-back-top:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-back-top span { margin-right: 8px; font-size: 1.2rem; }
 
         /* --- TARJETAS DE TALLAS (ROPA) --- */
         .sizes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Adaptable */
             gap: 15px;
             margin-bottom: 30px;
+            justify-content: center; /* Centrar items */
         }
         .size-card {
             background: #fafafa;
             border: 1px solid #eee;
             border-radius: 12px;
             padding: 20px 10px;
-            display: flex; flex-direction: column; align-items: center;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; /* Centrar contenido verticalmente */
+            text-align: center;  /* Centrar texto */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .size-icon { font-size: 2.5rem; margin-bottom: 10px; }
-        .size-label { font-weight: bold; color: var(--gold); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
-        .size-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-main); margin-top: 5px; }
+        .size-label { font-weight: bold; color: var(--gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .size-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-main); margin-top: 5px; font-weight: bold; }
 
         /* --- GRID DE REGALOS --- */
         .gifts-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Una columna en móvil */
+            grid-template-columns: 1fr; /* Móvil: 1 columna */
             gap: 25px;
+            justify-items: center; /* Centrar las tarjetas en el grid */
         }
         @media (min-width: 600px) {
-            .gifts-grid { grid-template-columns: 1fr 1fr; } /* Dos columnas en PC */
+            .gifts-grid { grid-template-columns: repeat(2, 1fr); } /* PC: 2 columnas */
         }
 
         .gift-card {
@@ -80,37 +118,57 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             border: 1px solid #eee;
             transition: transform 0.2s;
+            width: 100%; /* Ocupar el espacio asignado */
+            max-width: 350px; /* No hacerse gigante */
+            display: flex;
+            flex-direction: column;
         }
         .gift-card:hover { transform: translateY(-5px); }
         
         .gift-img {
-            width: 100%; height: 180px; object-fit: cover;
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover;
+            border-bottom: 1px solid #f0f0f0;
         }
-        .gift-content { padding: 20px; text-align: left; }
-        .gift-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; color: var(--text-main); }
-        .gift-desc { font-size: 0.9rem; color: #777; margin-bottom: 15px; line-height: 1.4; }
+        
+        /* CORRECCIÓN DE ALINEACIÓN DE TEXTO */
+        .gift-content { 
+            padding: 25px 20px; 
+            text-align: center; /* TODO CENTRADO */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .gift-title { font-weight: bold; font-size: 1.15rem; margin-bottom: 8px; color: var(--text-main); }
+        .gift-desc { font-size: 0.95rem; color: #777; margin-bottom: 20px; line-height: 1.5; }
         
         /* Botones de acción */
         .btn-reserve {
             display: block; width: 100%; text-align: center;
             background: var(--gold); color: white;
-            text-decoration: none; padding: 10px; border-radius: 6px;
+            text-decoration: none; padding: 12px; border-radius: 50px;
             font-weight: bold; font-size: 0.9rem;
             transition: background 0.2s;
+            box-shadow: 0 4px 10px rgba(197, 160, 89, 0.3);
         }
         .btn-reserve:hover { background: #b08d48; }
         
         .btn-secondary {
             display: block; width: 100%; text-align: center;
-            background: #f0f0f0; color: #555;
-            text-decoration: none; padding: 10px; border-radius: 6px;
-            font-weight: bold; font-size: 0.9rem;
+            background: #f5f5f5; color: #888;
+            text-decoration: none; padding: 12px; border-radius: 50px;
+            font-weight: bold; font-size: 0.85rem;
+            border: 1px solid #ddd;
         }
 
         .note-box {
-            background: #fff8e1; border: 1px solid #ffe0b2;
-            padding: 15px; border-radius: 8px; margin: 20px 0;
-            font-size: 0.9rem; color: #8d6e3e;
+            background: #fffdf5; border: 1px solid var(--gold);
+            padding: 15px; border-radius: 8px; margin: 20px auto;
+            font-size: 0.95rem; color: #5d4037;
+            max-width: 500px; /* Centrado y no muy ancho */
         }
 
     </style>
@@ -124,7 +182,7 @@
 
         <h1>Mesa de Regalos</h1>
         <p class="subtitle">
-            Su presencia es lo más importante. Pero si gustan tener un detalle, aquí les dejo lo que me gusta y necesito.
+            Su presencia es lo más importante. Pero si gustan tener un detalle, aquí les dejo algunas ideas.
         </p>
 
         <h2>👖 Ropa y Tallas</h2>
@@ -142,22 +200,22 @@
                 <div class="size-icon">👕</div>
                 <div class="size-label">Playeras / Camisas</div>
                 <div class="size-value">M</div>
-                <span style="font-size:0.7rem; color:#999;">(Mediana)</span>
+                <span style="font-size:0.8rem; color:#999;">(Mediana)</span>
             </div>
             <div class="size-card">
                 <div class="size-icon">🧥</div>
                 <div class="size-label">Sudaderas / Chamarras</div>
                 <div class="size-value">L</div>
-                <span style="font-size:0.7rem; color:#999;">(Grande)</span>
+                <span style="font-size:0.8rem; color:#999;">(Grande)</span>
             </div>
         </div>
 
         <h2>🥃 Gustos Personales</h2>
-        <p style="margin-bottom: 20px; font-size: 0.95rem;">Cosas que nunca sobran y siempre se agradecen:</p>
+        <p style="margin-bottom: 25px; font-size: 0.95rem; color: #666;">Cosas que nunca sobran y siempre se agradecen:</p>
 
         <div class="gifts-grid">
             <div class="gift-card">
-                <img src="https://images.unsplash.com/photo-1597934887406-813175a9390b?w=600&auto=format&fit=crop" class="gift-img">
+                <img src="https://images.pexels.com/photos/602750/pexels-photo-602750.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Botellas">
                 <div class="gift-content">
                     <div class="gift-title">Para el Brindis</div>
                     <div class="gift-desc">Me gusta el Tequila, el Brandy y los Licores en general.</div>
@@ -165,7 +223,7 @@
                 </div>
             </div>
             <div class="gift-card">
-                <img src="https://images.unsplash.com/photo-1595429035839-c99c298ffdde?w=600&auto=format&fit=crop" class="gift-img">
+                <img src="https://images.pexels.com/photos/965989/pexels-photo-965989.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Lociones">
                 <div class="gift-content">
                     <div class="gift-title">Lociones</div>
                     <div class="gift-desc">Una buena loción siempre cae bien para oler rico.</div>
@@ -175,14 +233,14 @@
         </div>
 
         <h2>🎁 Regalos Especiales</h2>
-        <div class="note-box" style="background-color: #e8f5e9; border-color: #c8e6c9; color: #2e7d32;">
+        <div class="note-box" style="background-color: #f1f8e9; border-color: #a5d6a7; color: #2e7d32;">
             <strong>¡Ojo aquí!</strong> Para que no se repitan estos regalos, dale clic en <strong>"Apartar Regalo"</strong> para avisar por WhatsApp que tú lo llevarás.
         </div>
 
         <div class="gifts-grid">
             
             <div class="gift-card">
-                <img src="https://images.unsplash.com/photo-1544212267-33157f12bc09?w=600&auto=format&fit=crop" class="gift-img">
+                <img src="https://images.pexels.com/photos/63703/pexels-photo-63703.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Sonido">
                 <div class="gift-content">
                     <div class="gift-title">Barra de Sonido</div>
                     <div class="gift-desc">Quiero una para poner música a todo volumen (pero solo necesito una, jaja).</div>
@@ -191,23 +249,22 @@
             </div>
 
             <div class="gift-card">
-                <img src="https://images.pexels.com/photos/10576326/pexels-photo-10576326.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img">
+                <img src="https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Herramienta">
                 <div class="gift-content">
                     <div class="gift-title">DeWalt Inalámbricos (20V)</div>
                     <div class="gift-desc">
-                        ¡Me encantan! Busco herramientas compatibles con pila de 20V.
-                        <br><br>
-                        <strong>Nota:</strong> Ya tengo Rotomartillo e Impacto. Cualquier otra es bienvenida (Sierra, Lámpara, etc.)
+                        Busco herramientas compatibles con pila de 20V.<br>
+                        <span style="font-size: 0.85rem; color: #d32f2f;">(Ya tengo Rotomartillo e Impacto. Cualquier otra es bienvenida).</span>
                     </div>
                     <a href="#" onclick="apartarRegalo('Herramienta DeWalt')" class="btn-reserve">📲 Apartar Regalo</a>
                 </div>
             </div>
 
              <div class="gift-card">
-                <img src="https://images.unsplash.com/photo-1581235720704-06d3acfcb379?w=600&auto=format&fit=crop" class="gift-img">
+                <img src="https://images.pexels.com/photos/175039/pexels-photo-175039.jpeg?auto=compress&cs=tinysrgb&w=600" class="gift-img" alt="Herramientas">
                 <div class="gift-content">
                     <div class="gift-title">Herramientas en General</div>
-                    <div class="gift-desc">Si ves alguna herramienta manual curiosa o útil, seguro me sirve.</div>
+                    <div class="gift-desc">Si ves alguna herramienta manual curiosa o útil, seguro me sirve para la colección.</div>
                     <div class="btn-secondary">No requiere apartado</div>
                 </div>
             </div>
@@ -221,7 +278,7 @@
     <script>
         // Función para enviar mensaje de WhatsApp
         function apartarRegalo(producto) {
-            // Número de teléfono del organizador (TÚ)
+            // Número de teléfono del organizador
             const telefono = "5214142196990"; 
             
             // Mensaje automático
