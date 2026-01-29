@@ -156,7 +156,7 @@
         .btn-rsvp { 
             background-color: var(--btn-black); color: white; 
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            animation: pulse-btn 2s infinite; /* Animación continua */
+            animation: pulse-btn 2s infinite; 
         }
         
         @keyframes pulse-btn {
@@ -164,29 +164,6 @@
             70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(34, 34, 34, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 34, 34, 0); }
         }
-
-        /* --- 8. MODAL DE AVISO --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 2000;
-            display: none; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .modal-box {
-            background: white; width: 85%; max-width: 350px;
-            padding: 30px 20px; border-radius: 15px;
-            text-align: center; transform: scale(0.9); transition: transform 0.3s;
-        }
-        .modal-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); margin-bottom: 10px; }
-        .modal-text { font-size: 1rem; color: #555; margin-bottom: 20px; line-height: 1.5; }
-        .modal-close-btn {
-            background: var(--btn-black); color: white; border: none;
-            padding: 10px 25px; border-radius: 30px; cursor: pointer;
-            font-weight: bold; text-transform: uppercase; font-size: 0.8rem;
-        }
-        .modal-open { display: flex; }
-        .modal-visible { opacity: 1; }
-        .modal-visible .modal-box { transform: scale(1); }
 
     </style>
 </head>
@@ -263,25 +240,12 @@
         </div>
 
         <div class="action-buttons">
-            <div class="btn btn-gift" onclick="showGiftModal()">🎁 Ver Mesa de Regalos</div>
+            <a href="regalos.html" class="btn btn-gift">🎁 Ver Mesa de Regalos</a>
             
             <a href="https://wa.me/5214142196990?text=Hola!%20Confirmo%20mi%20asistencia%20para%20los%2050%20de%20Ramón." class="btn btn-rsvp">Confirmar Asistencia</a>
         </div>
 
     </main>
-
-    <div id="gift-modal" class="modal-overlay" onclick="closeGiftModal()">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <div class="modal-title">¡Espérame tantito!</div>
-            <p class="modal-text">
-                Todavía estoy decidiendo qué me gustaría (es difícil llegar a los 50). 
-                <br><br>
-                Date una vuelta en unos días, ¡prometo tenerla lista!
-            </p>
-            <button class="modal-close-btn" onclick="closeGiftModal()">Entendido</button>
-        </div>
-    </div>
-
 
     <script>
         /* --- 1. LÓGICA DE APERTURA --- */
@@ -365,19 +329,6 @@
                 if(w) w.style.display = 'block';
             }
         })();
-
-        /* --- 6. MODAL --- */
-        function showGiftModal() {
-            const modal = document.getElementById('gift-modal');
-            modal.classList.add('modal-open');
-            setTimeout(() => { modal.classList.add('modal-visible'); }, 10);
-        }
-
-        function closeGiftModal() {
-            const modal = document.getElementById('gift-modal');
-            modal.classList.remove('modal-visible');
-            setTimeout(() => { modal.classList.remove('modal-open'); }, 300);
-        }
     </script>
 </body>
 </html>
