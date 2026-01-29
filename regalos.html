@@ -59,11 +59,12 @@
         }
         .size-icon { font-size: 2.5rem; margin-bottom: 10px; }
         
-        /* --- FILTROS DE COLOR (NUEVOS) --- */
-        .icon-black { filter: grayscale(100%) brightness(30%); } /* Negro/Gris Oscuro */
-        .icon-red { filter: hue-rotate(150deg) saturate(200%); } /* Rojo Intenso */
-        .icon-green { filter: hue-rotate(260deg); } /* Verde/Café */
-        .icon-blue { filter: hue-rotate(0deg); } /* Azul Original */
+        /* --- FILTROS DE COLOR CORREGIDOS --- */
+        .icon-black { filter: grayscale(100%) brightness(30%); }
+        /* Ajuste para rojo verdadero */
+        .icon-red { filter: hue-rotate(175deg) saturate(300%); } 
+        .icon-green { filter: hue-rotate(260deg); } 
+        .icon-blue { filter: hue-rotate(0deg); } 
 
         .size-label { font-weight: bold; color: var(--gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
         .size-value { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text-main); margin-top: 5px; font-weight: bold; }
