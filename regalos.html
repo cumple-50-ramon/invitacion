@@ -47,6 +47,29 @@
         .btn-back-top:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-back-top span { margin-right: 8px; font-size: 1.2rem; }
 
+        /* --- INDICADOR DE SCROLL (NUEVO) --- */
+        .scroll-hint {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 999; color: var(--text-main);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px; border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid #eee;
+            font-size: 0.85rem; text-transform: uppercase;
+            letter-spacing: 2px; font-weight: bold;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            transition: opacity 0.5s ease;
+            opacity: 0; /* Empieza invisible */
+            pointer-events: none;
+        }
+        .bounce { animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
+        .show-hint { opacity: 1; }
+        .fade-out { opacity: 0 !important; }
+
         /* --- TARJETAS DE TALLAS --- */
         .sizes-grid {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
@@ -59,9 +82,8 @@
         }
         .size-icon { font-size: 2.5rem; margin-bottom: 10px; }
         
-        /* --- FILTROS DE COLOR CORREGIDOS --- */
+        /* Filtros de color */
         .icon-black { filter: grayscale(100%) brightness(30%); }
-        /* Ajuste para rojo verdadero */
         .icon-red { filter: hue-rotate(175deg) saturate(300%); } 
         .icon-green { filter: hue-rotate(260deg); } 
         .icon-blue { filter: hue-rotate(0deg); } 
@@ -155,6 +177,13 @@
     </style>
 </head>
 <body>
+
+    <div id="scroll-hint" class="scroll-hint bounce">
+        <span>Desliza</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+        </svg>
+    </div>
 
     <div class="container-narrow">
         <a href="index.html" class="btn-back-top">
@@ -302,7 +331,21 @@
 
 
     <script>
-        // --- Lógica del Modal "Libre" ---
+        // --- 1. Lógica del Indicador de Scroll ---
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('scroll-hint').classList.add('show-hint');
+            }, 1000);
+        };
+        
+        window.addEventListener('scroll', function() {
+            const hint = document.getElementById('scroll-hint');
+            if (window.scrollY > 50) { 
+                hint.classList.add('fade-out'); 
+            }
+        });
+
+        // --- 2. Lógica del Modal "Libre" ---
         function showFreeModal() {
             const modal = document.getElementById('free-modal');
             modal.classList.add('modal-open');
@@ -314,7 +357,7 @@
             setTimeout(() => { modal.classList.remove('modal-open'); }, 300);
         }
 
-        // --- Lógica del Modal "Apartado/Confirmación" ---
+        // --- 3. Lógica del Modal "Apartado/Confirmación" ---
         function abrirConfirmacion(producto) {
             const modal = document.getElementById('reserve-modal');
             const btnWhatsapp = document.getElementById('btn-whatsapp-dynamic');
