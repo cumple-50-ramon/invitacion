@@ -59,10 +59,11 @@
         }
         .size-icon { font-size: 2.5rem; margin-bottom: 10px; }
         
-        /* Filtros de color para emojis */
-        .icon-blue { filter: hue-rotate(0deg); }
-        .icon-red { filter: hue-rotate(140deg); } 
-        .icon-green { filter: hue-rotate(260deg); } 
+        /* --- FILTROS DE COLOR (NUEVOS) --- */
+        .icon-black { filter: grayscale(100%) brightness(30%); } /* Negro/Gris Oscuro */
+        .icon-red { filter: hue-rotate(150deg) saturate(200%); } /* Rojo Intenso */
+        .icon-green { filter: hue-rotate(260deg); } /* Verde/Café */
+        .icon-blue { filter: hue-rotate(0deg); } /* Azul Original */
 
         .size-label { font-weight: bold; color: var(--gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
         .size-value { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text-main); margin-top: 5px; font-weight: bold; }
@@ -171,8 +172,8 @@
 
         <div class="sizes-grid">
             <div class="size-card">
-                <div class="size-icon icon-blue">👖</div>
-                <div class="size-label">Pantalón (Jeans)</div>
+                <div class="size-icon icon-black">👖</div>
+                <div class="size-label">Pantalón</div>
                 <div class="size-value">34</div>
             </div>
             
@@ -190,8 +191,8 @@
                 <span style="font-size:0.8rem; color:#999;">(Grande)</span>
             </div>
 
-             <div class="size-card">
-                <div class="size-icon">🧥</div>
+            <div class="size-card">
+                <div class="size-icon icon-blue">🧥</div>
                 <div class="size-label">Chamarras</div>
                 <div class="size-value">L</div>
                 <span style="font-size:0.8rem; color:#999;">(Grande)</span>
