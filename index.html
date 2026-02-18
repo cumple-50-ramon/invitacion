@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Courier+New:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- VARIABLES --- */
         :root {
             --bg-color: #ffffff;
             --text-main: #333333;
@@ -32,32 +31,30 @@
             text-align: center;
         }
 
-        /* Clase para modo hacker */
         body.hack-mode { background-color: #000000 !important; font-family: 'Courier New', monospace !important; overflow: hidden !important; }
 
-        /* =========================================
-           1. SORPRESA CUMPLEAÑOS (DÍA 22)
-           ========================================= */
+        /* --- 1. SORPRESA CUMPLEAÑOS (DÍA 22) --- */
         #birthday-surprise {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh;
             background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
-            z-index: 99999;
-            flex-direction: column; justify-content: space-evenly; align-items: center;
-            padding: 20px;
+            z-index: 99999; flex-direction: column; justify-content: space-evenly; align-items: center; padding: 20px;
         }
         .b-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); margin: 0; line-height: 1.2; animation: popIn 1s ease forwards; }
-        .b-text { font-size: 1rem; color: #666; margin: 15px 0; max-width: 90%; line-height: 1.5; }
+        .b-text { font-size: 1rem; color: #666; margin: 10px 0; max-width: 90%; line-height: 1.5; }
         .cake-emoji { font-size: 5rem; margin: 0; animation: bounceCake 2s infinite; }
-        .confetti { position: absolute; width: 10px; height: 10px; background-color: #f2d74e; top: -10vh; animation: fall 5s linear infinite; pointer-events: none; }
+        
+        /* ESTILOS DEL CONFETI */
+        .confetti { 
+            position: absolute; width: 10px; height: 10px; top: -10vh; 
+            animation: fall 4s linear infinite; pointer-events: none; 
+        }
+
         .unlock-icon-pastel { font-size: 2rem; opacity: 0.3; cursor: pointer; margin-top: 10px; }
 
-        /* =========================================
-           2. MODO HACKER (DÍA 23+)
-           ========================================= */
+        /* --- 2. MODO HACKER (DÍA 23+) --- */
         #hack-layer {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh;
-            z-index: 99999; background-color: black;
-            flex-direction: column; justify-content: space-evenly; align-items: center;
+            z-index: 99999; background-color: black; flex-direction: column; justify-content: space-evenly; align-items: center;
             padding: 20px; font-family: 'Courier New', monospace; color: white;
         }
         #matrix-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.4; z-index: -1; }
@@ -65,9 +62,10 @@
         .alert-icon { font-size: 3.5rem; color: var(--hacker-green); animation: pulseAlert 1.5s infinite; text-shadow: 0 0 15px rgba(255,255,255,0.5); }
         .hack-title { font-size: 1.5rem; color: var(--hacker-green); border-bottom: 2px solid var(--hacker-green); display: inline-block; background: rgba(0,0,0,0.8); padding: 5px; }
         
+        .hacker-msg { line-height: 2.6; }
         .hacker-msg span {
             display: inline; background: rgba(0,0,0,0.85); padding: 4px 8px; border: 1px solid rgba(10,255,10,0.3);
-            font-size: 0.9rem; line-height: 2.2; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+            font-size: 0.9rem; -webkit-box-decoration-break: clone; box-decoration-break: clone;
         }
         
         .cmd-btn {
@@ -75,111 +73,63 @@
             padding: 12px 20px; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; letter-spacing: 2px;
         }
 
-        /* =========================================
-           3. MODAL DE CONTRASEÑA (UNIFICADO)
-           ========================================= */
+        /* --- 3. MODAL CONTRASEÑA --- */
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 100000;
-            justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.9); z-index: 100000; justify-content: center; align-items: center;
         }
-        .modal-box {
-            background: white; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s;
-        }
-        .pass-display {
-            background: #f0f0f0; height: 50px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; font-weight: bold; letter-spacing: 5px; border-radius: 10px; margin-bottom: 20px; color: #333;
-        }
+        .modal-box { background: white; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; text-align: center; }
+        .pass-display { background: #f0f0f0; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; letter-spacing: 5px; border-radius: 10px; margin-bottom: 20px; color: #333; }
         .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .key {
-            padding: 15px 0; font-size: 1.2rem; font-weight: bold; cursor: pointer; border-radius: 10px;
-            background: #fff; border: 1px solid #ddd; color: #333;
-        }
-        .key:active { background: #eee; }
+        .key { padding: 15px 0; font-size: 1.2rem; font-weight: bold; cursor: pointer; border-radius: 10px; background: #fff; border: 1px solid #ddd; color: #333; }
         
-        /* ESTILOS ESPECIFICOS PARA CUANDO ES HACKER */
-        .hacker-style .modal-box {
-            background: #000000; border: 2px solid var(--hacker-green); border-radius: 0; box-shadow: 0 0 20px var(--hacker-green);
-        }
+        .hacker-style .modal-box { background: #000000; border: 2px solid var(--hacker-green); border-radius: 0; box-shadow: 0 0 20px var(--hacker-green); }
         .hacker-style .modal-title { color: var(--hacker-green); font-family: 'Courier New', monospace; }
         .hacker-style .admin-note { color: #fff; font-family: 'Courier New', monospace; }
-        .hacker-style .pass-display {
-            background: #000000; border: 1px solid var(--hacker-green); color: var(--hacker-green); font-family: 'Courier New', monospace;
-        }
-        .hacker-style .key {
-            background: #000000; border: 1px solid #333; color: #fff; font-family: 'Courier New', monospace; border-radius: 0;
-        }
+        .hacker-style .pass-display { background: #000000; border: 1px solid var(--hacker-green); color: var(--hacker-green); font-family: 'Courier New', monospace; }
+        .hacker-style .key { background: #000000; border: 1px solid #333; color: #fff; font-family: 'Courier New', monospace; border-radius: 0; }
         .hacker-style .key:active { background: var(--hacker-green); color: black; }
         
-        /* Animaciones */
-        @keyframes popIn { 0% {transform: scale(0);} 80% {transform: scale(1.1);} 100% {transform: scale(1);} }
+        @keyframes popIn { 0% {transform: scale(0);} 100% {transform: scale(1);} }
         @keyframes bounceCake { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-20px) rotate(5deg);} }
-        @keyframes pulseAlert { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.15);} }
+        @keyframes pulseAlert { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.1);} }
+        @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
 
-        /* =========================================
-           4. INVITACIÓN ORIGINAL
-           ========================================= */
+        /* --- 4. INVITACIÓN ORIGINAL --- */
         #original-invite { transition: opacity 0.5s; }
-        
-        #cover-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 500; background: #111;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s;
-        }
+        #cover-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 500; background: #111; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s; }
         .enter-btn { background: transparent; border: 2px solid var(--gold); color: var(--gold); padding: 15px 50px; font-size: 1.1rem; cursor: pointer; margin-top: 25px; font-weight: bold; text-transform: uppercase;}
-        
         .container { max-width: 600px; margin: 0 auto; padding: 40px 20px 100px; opacity: 0; transform: translateY(20px); transition: all 1s ease; }
         .visible { opacity: 1; transform: translateY(0); }
-        
-        /* Estilos generales invitación */
         h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 10px; }
         .subtitle { font-size: 1.1rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; }
         .casual-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
-        
         .countdown { display: flex; justify-content: center; gap: 15px; margin: 40px 0; }
-        .time-box { min-width: 55px; }
         .time-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); font-weight: bold; display: block; }
         .time-lbl { font-size: 0.65rem; text-transform: uppercase; color: #999; }
-        .ticking { animation: pulse 1s infinite; }
-        @keyframes pulse { 0% {opacity:1;} 50% {opacity:0.8;} 100% {opacity:1;} }
-        
         .details-box { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 40px 0; margin: 30px 0; }
-        .detail-title { font-weight: bold; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; color: var(--gold); }
+        .detail-title { font-weight: bold; text-transform: uppercase; font-size: 0.85rem; color: var(--gold); }
         .detail-info { font-size: 1.3rem; margin: 5px 0; font-family: 'Playfair Display', serif; }
-        .map-link { display: inline-block; margin-top: 8px; color: var(--text-light); text-decoration: underline; font-size: 0.9rem; }
-
         .weather-card { background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%); border: 1px solid #eee; border-radius: 12px; padding: 20px; margin: 20px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 20px; }
-        .weather-temp { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: bold; }
-        
-        /* GALERÍA (ESTILO LENTO Y ORIGINAL) */
-        .gallery-section { position: relative; width: 100%; overflow: hidden; background-color: #fafafa; padding: 20px 0; margin: 40px 0; pointer-events: none; user-select: none; }
-        .gallery-section::before { content: ''; position: absolute; top: 0; left: 0; width: 10%; height: 100%; z-index: 2; background: linear-gradient(to right, #fafafa, rgba(250,250,250,0)); }
-        .gallery-section::after { content: ''; position: absolute; top: 0; right: 0; width: 10%; height: 100%; z-index: 2; background: linear-gradient(to left, #fafafa, rgba(250,250,250,0)); }
-        .row-wrapper { position: relative; width: 100%; display: flex; overflow: hidden; margin-bottom: 12px; }
-        .collage-track { display: flex; flex-wrap: nowrap; width: max-content; align-items: center; will-change: transform; }
-        .collage-track img { height: 110px; width: auto; object-fit: cover; border-radius: 4px; margin: 0 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-color: #eee; }
-        @media (min-width: 768px) { .collage-track img { height: 180px; margin: 0 10px; } }
-        /* ANIMACIONES LENTAS RESTAURADAS (400s) */
+        .gallery-section { position: relative; width: 100%; overflow: hidden; background: #fafafa; padding: 20px 0; margin: 40px 0; }
+        .collage-track { display: flex; width: max-content; align-items: center; }
+        .collage-track img { height: 110px; margin: 0 5px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .scroll-left { animation: scrollLeft 400s linear infinite; }
         .scroll-right { animation: scrollRight 400s linear infinite; }
-        @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes scrollLeft { to { transform: translateX(-50%); } }
         @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
-        
         .btn { display: block; padding: 16px; text-decoration: none; border-radius: 50px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
-        .btn-gift { background: white; color: #333; border: 1px solid #ccc; }
-        .btn-rsvp { background: #222; color: white; animation: pulseBtn 2s infinite; }
-        @keyframes pulseBtn { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34,34,34,0.4); } 70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(34,34,34,0); } 100% { transform: scale(1); } }
-
+        .btn-rsvp { background: #222; color: white; }
     </style>
 </head>
 <body>
 
     <div id="original-invite">
         <div id="cover-screen">
-            <div style="position: relative; z-index: 2; color: white; padding: 0 20px;">
+            <div style="color: white; text-align: center;">
                 <h1 style="color: white; margin: 0;">Ramón</h1>
-                <p style="letter-spacing: 4px; font-size: 1.5rem; text-transform: uppercase; margin-top:10px;">50 Años</p>
+                <p style="letter-spacing: 4px; font-size: 1.5rem; text-transform: uppercase;">50 Años</p>
                 <button class="enter-btn" onclick="openInvite()">Entrar</button>
             </div>
         </div>
@@ -193,46 +143,38 @@
                 <div class="time-box"><span class="time-num" id="d">00</span><span class="time-lbl">Días</span></div>
                 <div class="time-box"><span class="time-num" id="h">00</span><span class="time-lbl">Hrs</span></div>
                 <div class="time-box"><span class="time-num" id="m">00</span><span class="time-lbl">Min</span></div>
-                <div class="time-box"><span class="time-num ticking" id="s">00</span><span class="time-lbl">Seg</span></div>
+                <div class="time-box"><span class="time-num" id="s">00</span><span class="time-lbl">Seg</span></div>
             </div>
 
             <div class="details-box">
                 <div class="detail-item"><div class="detail-title">¿Cuándo?</div><div class="detail-info">Sábado 21 de Febrero</div><div class="detail-sub">A la 1:00 de la tarde</div></div>
-                <div class="detail-item" style="margin-top:20px;"><div class="detail-title">¿Dónde?</div><div class="detail-info">Tequisquiapan, Qro.</div><a href="https://maps.app.goo.gl/dzgAGpnVLi68uQiv9" target="_blank" class="map-link">Ver Ubicación en Mapa</a></div>
-            </div>
-
-            <div style="margin: 40px 0 20px;">
-                <div class="detail-title">Código de Vestimenta</div>
-                <p class="casual-text" style="font-size: 1rem; margin-top: 10px;">No hay etiqueta rigurosa, vénganse cómodos.<br><span style="display:block; margin-top:10px; color: #7f8c8d; font-style: italic; font-size: 0.9rem;">"Les dejo el pronóstico aquí abajo:"</span></p>
+                <div class="detail-item" style="margin-top:20px;"><div class="detail-title">¿Dónde?</div><div class="detail-info">Tequisquiapan, Qro.</div><a href="https://maps.app.goo.gl/dzgAGpnVLi68uQiv9" target="_blank" style="color:#999; font-size:0.9rem">Ver Ubicación en Mapa</a></div>
             </div>
 
             <div class="weather-card" id="weather-card-dynamic"><div class="loading-text">Cargando clima...</div></div>
 
             <div class="detail-title" style="margin-top: 40px;">Un viaje en el tiempo</div>
             <div class="gallery-section">
-                <div class="row-wrapper"><div class="collage-track scroll-right" id="track-1"></div></div>
-                <div class="row-wrapper"><div class="collage-track scroll-left" id="track-2"></div></div>
-                <div class="row-wrapper"><div class="collage-track scroll-right" id="track-3"></div></div>
+                <div class="collage-track scroll-right" id="track-1"></div>
+                <div class="collage-track scroll-left" id="track-2" style="margin-top:10px"></div>
             </div>
 
-            <div class="action-buttons">
-                <a href="regalos.html" class="btn btn-gift">🎁 Ver Mesa de Regalos</a>
-                <a href="https://wa.me/5214142196990?text=Hola!%20Confirmo%20mi%20asistencia." class="btn btn-rsvp">Confirmar Asistencia</a>
+            <div class="action-buttons" style="margin-top:30px">
+                <a href="regalos.html" class="btn" style="border:1px solid #ccc; background:white; color:#333">🎁 Mesa de Regalos</a>
+                <a href="https://wa.me/5214142196990?text=Confirmo%20mi%20asistencia." class="btn btn-rsvp">Confirmar Asistencia</a>
             </div>
         </main>
     </div>
 
     <div id="birthday-surprise">
-        <div class="content-wrapper">
-            <div class="cake-emoji">🎂</div>
-            <div class="b-title">¡Feliz Cumpleaños!</div>
-            <div style="display:flex; flex-direction:column; gap:10px; margin: 15px 0;">
-                <p class="b-text">Fue increíble celebrar contigo ayer.</p>
-                <p class="b-text">Hoy, en tu mero día, te deseamos lo mejor del mundo.</p>
-                <p style="font-size: 1rem; color: var(--gold); font-weight: bold; letter-spacing: 2px;">¡TE QUEREMOS!</p>
-            </div>
+        <div class="cake-emoji">🎂</div>
+        <div class="b-title">¡Feliz Cumpleaños!</div>
+        <div class="text-group">
+            <p class="b-text">Fue increíble celebrar contigo ayer.</p>
+            <p class="b-text">Hoy, en tu mero día, te deseamos lo mejor.</p>
+            <p style="font-size: 1rem; color: var(--gold); font-weight: bold; letter-spacing: 2px;">¡TE QUEREMOS!</p>
         </div>
-        <div id="confetti-container"></div>
+        <div id="confetti-container" style="position:absolute; width:100%; height:100%; top:0; left:0; z-index:-1; overflow:hidden;"></div>
         <div class="unlock-icon-pastel" onclick="openKeypad('normal')">🔒</div>
     </div>
 
@@ -240,77 +182,66 @@
         <canvas id="matrix-canvas"></canvas>
         <div class="alert-icon">⚠️</div>
         <div class="hack-title">SISTEMA SATURADO</div>
-        
         <div class="hacker-msg">
-            <span>> DIAGNÓSTICO: La fiesta rompió el algoritmo.</span>
-            <span>> ESTADO: Niveles de diversión críticos.</span>
+            <span class="hack-line">> DIAGNÓSTICO: La fiesta rompió el algoritmo.</span><br>
+            <span class="hack-line">> ESTADO: Niveles de diversión críticos.</span><br>
             <div style="height:10px"></div>
-            <span>Recuperando archivos de una noche épica... 📸</span>
-            <span>Las fotos aparecerán aquí pronto.</span>
+            <span class="hack-line">Recuperando archivos de una noche épica... 📸</span><br>
+            <span class="hack-line">Las fotos aparecerán aquí pronto.</span>
         </div>
-
-        <div style="margin-top:20px;">
-            <div style="font-size:3rem;">🤫</div>
-            <div style="font-size:0.7rem; opacity:0.7; letter-spacing:2px; margin-top:5px; color:var(--hacker-green);">TOP SECRET // CLASIFICADO</div>
-        </div>
-
+        <div style="font-size:3rem;">🤫</div>
         <button class="cmd-btn" onclick="openKeypad('hacker')">[ ACCESO_ADMIN ]</button>
     </div>
 
     <div id="modal-overlay">
         <div class="modal-box">
-            <div class="modal-title" id="modal-title">Desbloquear</div>
-            <div class="admin-note">Zona VIP. ¿Te sabes el código? 😉</div>
+            <div class="modal-title">Desbloquear</div>
+            <div class="admin-note">Zona VIP. ¿Código secreto? 😉</div>
             <div class="pass-display" id="pass-screen"></div>
             <div class="keypad">
                 <div class="key" onclick="press(1)">1</div><div class="key" onclick="press(2)">2</div><div class="key" onclick="press(3)">3</div>
                 <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
                 <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
-                <div class="key" style="color:var(--danger)" onclick="clearPass()">DEL</div>
-                <div class="key" onclick="press(0)">0</div>
-                <div class="key" style="color:var(--success)" onclick="checkPass()">OK</div>
+                <div class="key" style="color:var(--danger)" onclick="clearPass()">DEL</div><div class="key" onclick="press(0)">0</div><div class="key" style="color:var(--success)" onclick="checkPass()">OK</div>
             </div>
             <div style="margin-top:15px; font-size:0.8rem; text-decoration:underline; cursor:pointer;" onclick="closeKeypad()">Cancelar</div>
         </div>
     </div>
 
     <script>
-        // --- 1. DETECTOR DE FECHA ---
         (function() {
             const today = new Date();
-            const y = today.getFullYear();
-            const m = today.getMonth(); // 0=Ene, 1=Feb
-            const d = today.getDate();
-
+            const y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
             if(y === 2026 && m === 1 && d === 22) {
-                // MODO CUMPLEAÑOS
                 document.getElementById('birthday-surprise').style.display = 'flex';
-                document.body.classList.add('locked');
+                document.body.style.overflow = 'hidden';
                 startConfetti();
             } else if (y > 2026 || (y === 2026 && (m > 1 || (m === 1 && d >= 23)))) {
-                // MODO HACKER
-                activateHack();
+                document.getElementById('original-invite').style.display = 'none';
+                document.getElementById('hack-layer').style.display = 'flex';
+                startMatrix();
             }
         })();
 
-        // --- FUNCIONES MODO HACKER ---
-        function activateHack() {
-            document.body.classList.add('hack-mode');
-            // IMPORTANTE: Ocultar invitación original para que el fondo sea negro puro
-            document.getElementById('original-invite').style.display = 'none';
-            document.getElementById('hack-layer').style.display = 'flex';
-            startMatrix();
+        function startConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#C5A059', '#2c3e50', '#e74c3c', '#ffffff'];
+            for(let i=0; i<60; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+                conf.style.animationDelay = Math.random() * 5 + 's';
+                conf.style.animationDuration = (Math.random()*3+2) + 's';
+                container.appendChild(conf);
+            }
         }
 
-        // --- MATRIX CANVAS ---
         function startMatrix() {
-            const c = document.getElementById('matrix-canvas');
-            const ctx = c.getContext('2d');
+            const c = document.getElementById('matrix-canvas'), ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
-            const letters = "01RAMON50FIESTA"; const arr = letters.split("");
-            const fs = 12; const cols = c.width/fs; const drops = [];
+            const letters = "01RAMON50FIESTA", arr = letters.split(""), fs = 12, cols = c.width/fs, drops = [];
             for(let x=0; x<cols; x++) drops[x]=1;
-
             setInterval(() => {
                 ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
                 ctx.fillStyle = "#0aff0a"; ctx.font = fs + "px Courier New";
@@ -323,121 +254,53 @@
             }, 50);
         }
 
-        // --- FUNCIONES TECLADO ---
-        let currentPass = ""; 
-        const correctPass = "725205";
-
+        let currentPass = ""; const correctPass = "725205";
         function openKeypad(mode) {
-            const modal = document.getElementById('modal-overlay');
-            modal.style.display = 'flex';
-            currentPass = "";
-            updateScreen();
-            
-            // Aplicar estilo hacker si es necesario
-            if(mode === 'hacker') {
-                modal.classList.add('hacker-style');
-            } else {
-                modal.classList.remove('hacker-style');
-            }
+            const m = document.getElementById('modal-overlay');
+            m.style.display = 'flex'; currentPass = ""; updateScreen();
+            if(mode === 'hacker') m.classList.add('hacker-style'); else m.classList.remove('hacker-style');
         }
-
-        function closeKeypad() {
-            document.getElementById('modal-overlay').style.display = 'none';
-        }
-
-        function press(n) {
-            if(currentPass.length < 6) { currentPass += n; updateScreen(); }
-        }
+        function closeKeypad() { document.getElementById('modal-overlay').style.display = 'none'; }
+        function press(n) { if(currentPass.length < 6) { currentPass += n; updateScreen(); } }
         function clearPass() { currentPass = ""; updateScreen(); }
-        
         function updateScreen() {
-            const screen = document.getElementById('pass-screen');
-            // En modo hack mostramos asteriscos, en normal puntitos
-            const isHack = document.getElementById('modal-overlay').classList.contains('hacker-style');
-            screen.innerText = isHack ? "*".repeat(currentPass.length) : "•".repeat(currentPass.length);
+            const s = document.getElementById('pass-screen');
+            const isH = document.getElementById('modal-overlay').classList.contains('hacker-style');
+            s.innerText = isH ? "*".repeat(currentPass.length) : "•".repeat(currentPass.length);
         }
-
         function checkPass() {
             if(currentPass === correctPass) {
-                // EXITO
                 closeKeypad();
-                // Ocultar capas de bloqueo
                 document.getElementById('birthday-surprise').style.display = 'none';
                 document.getElementById('hack-layer').style.display = 'none';
-                
-                // Mostrar invitación original
                 document.getElementById('original-invite').style.display = 'block';
-                
-                // Quitar clases globales
-                document.body.classList.remove('hack-mode');
-                document.body.classList.remove('locked');
-                
-                alert("ACCESO CONCEDIDO. Bienvenido.");
+                document.body.style.overflow = 'auto';
+                alert("ACCESO CONCEDIDO");
             } else {
-                // ERROR
-                const box = document.querySelector('.modal-box');
-                const screen = document.getElementById('pass-screen');
-                box.style.animation = "shake 0.4s";
-                screen.style.color = "red";
-                setTimeout(() => {
-                    box.style.animation = "";
-                    const isHack = document.getElementById('modal-overlay').classList.contains('hacker-style');
-                    screen.style.color = isHack ? "#0aff0a" : "#333";
-                    clearPass();
-                }, 400);
+                document.querySelector('.modal-box').style.animation = "shake 0.4s";
+                setTimeout(() => { document.querySelector('.modal-box').style.animation = ""; clearPass(); }, 400);
             }
         }
 
-        // --- CONFETI SIMPLE ---
-        function startConfetti() {
-            const c = document.getElementById('confetti-container');
-            const colors = ['#C5A059','#2c3e50','#e74c3c'];
-            for(let i=0; i<50; i++){
-                let p = document.createElement('div');
-                p.className = 'confetti';
-                p.style.left = Math.random()*100+'vw';
-                p.style.background = colors[Math.floor(Math.random()*colors.length)];
-                p.style.animationDuration = (Math.random()*3+2)+'s';
-                c.appendChild(p);
-            }
-        }
-
-        // --- LOGICA INVITACION (Cuenta regresiva, clima, etc) ---
         function openInvite() {
             document.getElementById('cover-screen').style.opacity = '0';
-            setTimeout(()=> { 
-                document.getElementById('cover-screen').style.display = 'none';
-                document.querySelector('.container').classList.add('visible');
-            }, 800);
+            setTimeout(() => { document.getElementById('cover-screen').style.display = 'none'; document.querySelector('.container').classList.add('visible'); }, 800);
             fetchWeather();
         }
 
-        // API Clima
         async function fetchWeather() {
             try {
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=20.52&longitude=-99.89&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=America%2FMexico_City&start_date=2026-02-21&end_date=2026-02-21');
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=20.52&longitude=-99.89&daily=weather_code,temperature_2m_max&timezone=America%2FMexico_City&start_date=2026-02-21&end_date=2026-02-21');
                 const d = await res.json();
-                const max = Math.round(d.daily.temperature_2m_max[0]);
-                const code = d.daily.weather_code[0];
-                let icon = '☀️';
-                if(code > 3) icon = '⛅';
-                document.getElementById('weather-card-dynamic').innerHTML = `<div style="font-size:3rem">${icon}</div><div><div style="font-weight:bold">Sábado 21 Feb</div><div style="font-family:'Playfair Display', serif; font-size:2rem; font-weight:bold">${max}°C</div><div>Tequisquiapan</div></div>`;
-            } catch(e) { console.log(e); }
+                document.getElementById('weather-card-dynamic').innerHTML = `<div style="font-size:3rem">☀️</div><div><div style="font-weight:bold">Sábado 21 Feb</div><div style="font-size:2rem; font-weight:bold">${Math.round(d.daily.temperature_2m_max[0])}°C</div></div>`;
+            } catch(e) {}
         }
 
-        // Cuenta Regresiva (MENSAJE RESTAURADO)
         const target = new Date(2026, 1, 21, 13, 0, 0).getTime();
-        const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const gap = target - now;
+        setInterval(() => {
+            const gap = target - new Date().getTime();
             if(gap < 0) {
-                clearInterval(timer);
-                document.getElementById('countdown-container').innerHTML = `
-                    <div style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); font-weight: bold; animation: pulse 1s infinite; padding: 0 10px;">
-                        ¡La espera terminó!<br>
-                        <span style="font-size: 1.5rem; color: #333;">Es momento de festejar 🥂</span>
-                    </div>
-                `;
+                document.getElementById('countdown-container').innerHTML = "<div style='font-family:Playfair Display; font-size:1.6rem; font-weight:bold; color:#C5A059'>¡La espera terminó! Es momento de festejar 🥂</div>";
                 return;
             }
             document.getElementById('d').innerText = Math.floor(gap / (1000*60*60*24));
@@ -446,36 +309,16 @@
             document.getElementById('s').innerText = Math.floor((gap % (1000*60)) / 1000);
         }, 1000);
 
-        // Galeria (Restaurada para leer 40 fotos locales)
-        const totalPhotos = 40; 
-        const extension = '.jpeg';
-        function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
-        
-        function populateRow(trackId) {
-            const track = document.getElementById(trackId);
-            if(!track) return;
-            
-            let photos = [];
-            for (let i = 1; i <= totalPhotos; i++) photos.push(i);
-            photos = shuffleArray(photos);
-
-            const fragment = document.createDocumentFragment();
-            const loopPhotos = [...photos, ...photos]; 
-
-            loopPhotos.forEach(num => {
-                const img = document.createElement('img');
-                img.src = num + extension; 
-                img.loading = 'lazy'; 
-                img.alt = 'Recuerdo';
-                img.onerror = function() { this.style.display = 'none'; };
-                fragment.appendChild(img);
-            });
-            track.appendChild(fragment);
+        function populateRow(id) {
+            const t = document.getElementById(id); if(!t) return;
+            for(let i=1; i<=40; i++) {
+                const img = document.createElement('img'); img.src = i + '.jpeg';
+                img.onerror = function() { this.style.display='none'; };
+                t.appendChild(img);
+            }
+            t.innerHTML += t.innerHTML; // Duplicar para loop
         }
-
-        populateRow('track-1');
-        populateRow('track-2');
-        populateRow('track-3');
+        populateRow('track-1'); populateRow('track-2');
     </script>
 </body>
 </html>
