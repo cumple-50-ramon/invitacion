@@ -2,21 +2,24 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ramón | 50 Años</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Courier+New:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- VARIABLES DE DISEÑO --- */
+        /* --- VARIABLES GLOBALES --- */
         :root {
             --bg-color: #ffffff;
             --text-main: #333333;
             --text-light: #666666;
             --gold: #C5A059;       
-            --btn-black: #222222;  
+            --btn-black: #222222;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --hacker-green: #0aff0a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,60 +32,192 @@
             text-align: center;
         }
 
-        /* --- 1. PORTADA --- */
-        #cover-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 9999;
-            background: #111111; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        /* CLASE ESPECIAL PARA MODO HACKER */
+        body.hack-mode {
+            background-color: #000000 !important;
+            font-family: 'Courier New', Courier, monospace !important;
+            color: #ffffff !important;
+            height: 100vh; height: 100dvh;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           1. ESTILOS DE LA SORPRESA (DIA 22 - PASTEL)
+           ========================================= */
+        #birthday-surprise {
+            display: none; /* Se activa con JS */
+            position: fixed; top: 0; left: 0; width: 100%; 
+            height: 100vh; height: 100dvh; /* Altura dinámica real */
+            background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
+            z-index: 100000;
+            flex-direction: column; 
+            justify-content: space-evenly; /* Distribución perfecta en móvil */
             align-items: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            color: var(--text-main); padding: 20px; 
         }
 
-        .cover-content {
-            position: relative;
-            z-index: 2;
-            color: white;
-            padding: 0 20px;
+        .content-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; }
+        
+        .b-title {
+            font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold);
+            margin: 0; animation: popIn 1s ease forwards; line-height: 1.2;
+        }
+        /* Agrupar textos para control vertical */
+        .text-group { display: flex; flex-direction: column; gap: 15px; max-width: 90%; }
+        
+        .b-text { font-size: 1rem; color: #666; margin: 0; line-height: 1.5; animation: fadeIn 2s ease forwards; }
+        .cake-emoji { font-size: 5rem; margin: 0; animation: bounceCake 2s infinite; }
+        
+        .confetti {
+            position: absolute; width: 10px; height: 10px; background-color: #f2d74e;
+            top: -10vh; animation: fall 5s linear infinite; pointer-events: none;
         }
 
-        .enter-btn {
-            background: transparent;
-            border: 2px solid var(--gold);
-            color: var(--gold);
-            padding: 15px 50px;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            margin-top: 25px;
-            transition: all 0.3s;
-            font-family: 'Lato', sans-serif;
-            font-weight: bold;
+        /* =========================================
+           2. ESTILOS DEL HACKEO (DIA 23+ - MATRIX)
+           ========================================= */
+        #matrix-canvas {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100001; opacity: 0.5;
+        }
+
+        #hack-content {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 100002;
+            flex-direction: column; justify-content: space-evenly; align-items: center;
+            text-align: center; padding: 20px;
         }
         
-        .enter-btn:hover { background: var(--gold); color: #000; }
+        /* ICONO CON ANIMACIÓN DE PULSO (ZOOM) */
+        .alert-icon { 
+            font-size: 3.5rem; margin: 0; text-shadow: 0 0 15px rgba(255,255,255,0.8); color: var(--hacker-green);
+            animation: pulseAlert 1.5s infinite ease-in-out; 
+        }
+        
+        .hack-title {
+            font-size: 1.5rem; margin: 0; text-transform: uppercase; letter-spacing: 3px;
+            color: var(--hacker-green); display: inline; background: rgba(0,0,0,0.85); padding: 5px 10px;
+            -webkit-box-decoration-break: clone; box-decoration-break: clone;
+            line-height: 1.8; white-space: normal; word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+        }
+
+        .hacker-msg { display: block; width: 100%; max-width: 500px; line-height: 2.6; font-family: 'Courier New', monospace; }
+
+        /* Estilo de fondo ajustado al texto (Subtítulos) */
+        .hack-line {
+            display: inline; background: rgba(0, 0, 0, 0.85); padding: 5px 8px;
+            border: 1px solid rgba(10, 255, 10, 0.3); backdrop-filter: blur(2px);
+            font-size: 0.95rem; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+            white-space: normal; word-wrap: break-word; color: white;
+        }
+
+        .shhh-emoji { font-size: 3.5rem; margin: 0; }
+        .footer-text { 
+            font-size: 0.75rem; opacity: 0.8; letter-spacing: 2px;
+            background: rgba(0,0,0,0.8); padding: 3px 8px;
+            color: var(--hacker-green); display: inline-block; margin-top: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .cmd-btn {
+            background: rgba(0,0,0,0.8); border: 1px solid var(--hacker-green); color: var(--hacker-green);
+            padding: 12px 20px; font-family: 'Courier New', monospace; font-weight: bold; font-size: 0.85rem;
+            cursor: pointer; text-transform: uppercase; margin: 0; letter-spacing: 2px;
+        }
+
+        /* =========================================
+           3. MODAL DE CONTRASEÑA (COMPARTIDO)
+           ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 200000;
+            display: none; justify-content: center; align-items: center;
+        }
+        
+        .modal-box {
+            background: white; width: 85%; max-width: 320px; padding: 30px 20px; border-radius: 20px;
+            text-align: center; transform: scale(0.9); transition: transform 0.3s;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        /* Estilo especial del modal cuando estamos en modo hack */
+        .hack-mode .modal-box {
+            background: black; border: 1px solid var(--hacker-green); border-radius: 0; box-shadow: 0 0 20px rgba(10, 255, 10, 0.2);
+        }
+        .hack-mode .modal-title { font-family: 'Courier New', monospace; color: var(--hacker-green); }
+        .hack-mode .admin-note { color: white; font-family: 'Courier New', monospace; }
+        .hack-mode .pass-display { background: black; border: none; border-bottom: 2px solid var(--hacker-green); color: var(--hacker-green); }
+        .hack-mode .key { background: black; border: 1px solid #333; color: white; font-family: 'Courier New', monospace; }
+        .hack-mode .key:active { background: var(--hacker-green); color: black; }
+        .hack-mode .key-action { border-color: white; color: white; }
+
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 5px; }
+        .admin-note { font-size: 0.9rem; color: #999; margin-bottom: 20px; font-style: italic; }
+        
+        .pass-display {
+            background: #f9f9f9; border: 1px solid #eee; border-radius: 10px; padding: 15px; margin-bottom: 25px;
+            font-size: 1.8rem; letter-spacing: 8px; color: #333; font-weight: bold; min-height: 55px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .key {
+            background: white; border: 1px solid #e0e0e0; border-radius: 50%; width: 60px; height: 60px; margin: 0 auto;
+            display: flex; justify-content: center; align-items: center; font-size: 1.3rem; color: #555; cursor: pointer;
+        }
+        .key:active { background: #f5f5f5; transform: scale(0.95); }
+        
+        .key-action {
+            font-size: 0.75rem; font-weight: bold; text-transform: uppercase; background: transparent; border-width: 2px;
+        }
+        
+        /* Botón desbloqueo pastel */
+        .unlock-btn-pastel { margin: 0; opacity: 0.3; font-size: 1.8rem; cursor: pointer; color: #999; padding: 10px; }
+        
+        /* Utilerias y Animaciones */
+        .modal-open { display: flex; }
+        .modal-visible { opacity: 1; }
+        .modal-visible .modal-box { transform: scale(1); }
+        .shake { animation: shake 0.4s ease-in-out; }
+
+        @keyframes popIn { 0% {transform: scale(0);} 80% {transform: scale(1.1);} 100% {transform: scale(1);} }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        @keyframes bounceCake { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-20px) rotate(5deg);} }
+        
+        /* Animación de latido para el icono hack */
+        @keyframes pulseAlert {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); text-shadow: 0 0 25px rgba(10, 255, 10, 0.8); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
+
+
+        /* =========================================
+           4. ESTILOS INVITACION NORMAL
+           ========================================= */
+        #cover-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; background: #111111; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .cover-content { position: relative; z-index: 2; color: white; padding: 0 20px; }
+        .enter-btn {
+            background: transparent; border: 2px solid var(--gold); color: var(--gold);
+            padding: 15px 50px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; margin-top: 25px; transition: all 0.3s; font-family: 'Lato', sans-serif; font-weight: bold;
+        }
         .hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-        /* --- 2. CONTENEDOR PRINCIPAL --- */
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px 100px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease;
-        }
+        .container { max-width: 600px; margin: 0 auto; padding: 40px 20px 100px; opacity: 0; transform: translateY(20px); transition: all 1s ease; }
         .visible { opacity: 1; transform: translateY(0); }
-
         h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 10px; line-height: 1.2; }
         .subtitle { font-size: 1.1rem; color: var(--text-light); margin-bottom: 30px; letter-spacing: 1px; text-transform: uppercase; }
         .casual-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; color: var(--text-main); font-weight: 300; }
-
-        /* --- 3. CUENTA REGRESIVA --- */
+        
+        /* Cuenta regresiva */
         .countdown { display: flex; justify-content: center; gap: 15px; margin: 40px 0; }
         .time-box { min-width: 55px; position: relative; }
         .time-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); display: block; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -90,84 +225,126 @@
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(0.98); } 100% { opacity: 1; transform: scale(1); } }
         .time-lbl { font-size: 0.65rem; text-transform: uppercase; color: #999; letter-spacing: 1px; }
 
-        /* --- 4. INDICADOR DE SCROLL --- */
+        /* Scroll Hint */
         .scroll-hint {
-            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
-            z-index: 10000; color: var(--text-main);
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 20px; border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-size: 0.85rem; text-transform: uppercase;
-            letter-spacing: 2px; font-weight: bold;
-            display: none; flex-direction: column; align-items: center; gap: 5px;
-            transition: opacity 0.5s ease;
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); z-index: 10000; color: var(--text-main);
+            background: rgba(255, 255, 255, 0.8); padding: 10px 20px; border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;
+            display: none; flex-direction: column; align-items: center; gap: 5px; transition: opacity 0.5s ease;
         }
-        .bounce { animation: bounce 2s infinite; }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
-            40% {transform: translateX(-50%) translateY(-10px);}
-            60% {transform: translateX(-50%) translateY(-5px);}
-        }
-        .fade-out { opacity: 0 !important; pointer-events: none; }
         .show-hint { opacity: 1; }
+        .fade-out { opacity: 0 !important; pointer-events: none; }
 
-        /* --- 5. GALERÍA --- */
-        .gallery-section {
-            position: relative; width: 100%; overflow: hidden;
-            background-color: #fafafa; padding: 20px 0; margin: 40px 0;
-            pointer-events: none; user-select: none;
-        }
-        .gallery-section::before, .gallery-section::after {
-            content: ''; position: absolute; top: 0; width: 10%; height: 100%;
-            z-index: 2; pointer-events: none;
-        }
-        .gallery-section::before { left: 0; background: linear-gradient(to right, #fafafa, rgba(250,250,250,0)); }
-        .gallery-section::after { right: 0; background: linear-gradient(to left, #fafafa, rgba(250,250,250,0)); }
+        /* Galería */
+        .gallery-section { position: relative; width: 100%; overflow: hidden; background-color: #fafafa; padding: 20px 0; margin: 40px 0; pointer-events: none; user-select: none; }
+        .gallery-section::before { content: ''; position: absolute; top: 0; left: 0; width: 10%; height: 100%; z-index: 2; background: linear-gradient(to right, #fafafa, rgba(250,250,250,0)); }
+        .gallery-section::after { content: ''; position: absolute; top: 0; right: 0; width: 10%; height: 100%; z-index: 2; background: linear-gradient(to left, #fafafa, rgba(250,250,250,0)); }
         .row-wrapper { position: relative; width: 100%; display: flex; overflow: hidden; margin-bottom: 12px; }
         .collage-track { display: flex; flex-wrap: nowrap; width: max-content; align-items: center; will-change: transform; }
-        .collage-track img {
-            height: 110px; width: auto; object-fit: cover;
-            border-radius: 4px; margin: 0 5px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-color: #eee;
-        }
+        .collage-track img { height: 110px; width: auto; object-fit: cover; border-radius: 4px; margin: 0 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-color: #eee; }
         @media (min-width: 768px) { .collage-track img { height: 180px; margin: 0 10px; } }
         .scroll-left { animation: scrollLeft 400s linear infinite; }
         .scroll-right { animation: scrollRight 400s linear infinite; }
         @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
 
-        /* --- 6. DETALLES Y OTROS --- */
+        /* Detalles */
         .details-box { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 40px 0; margin: 30px 0; }
         .detail-item { margin-bottom: 30px; }
-        .detail-item:last-child { margin-bottom: 0; }
         .detail-title { font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 5px; }
         .detail-info { font-size: 1.3rem; margin: 5px 0; font-family: 'Playfair Display', serif;}
         .detail-sub { font-size: 1rem; color: #666; font-family: 'Lato', sans-serif;}
         .map-link { display: inline-block; margin-top: 8px; color: var(--text-light); text-decoration: underline; font-size: 0.9rem; }
-        .weather-widget { margin: 20px 0 40px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); display: none; }
+        
+        /* Tarjeta Clima */
+        .weather-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%); border: 1px solid #eee; border-radius: 12px; padding: 20px; margin: 20px auto 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 20px; max-width: 400px; min-height: 100px; transition: all 0.5s ease;
+        }
+        .weather-icon { font-size: 3.5rem; line-height: 1; }
+        .weather-data { text-align: left; }
+        .weather-day { font-weight: bold; color: var(--gold); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+        .weather-temp { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--text-main); font-weight: bold; }
+        .weather-desc { font-size: 0.9rem; color: #666; margin-top: 2px; text-transform: capitalize; }
+        .loading-text { font-size: 0.9rem; color: #999; font-style: italic; }
 
-        /* --- 7. BOTONES --- */
+        /* Botones */
         .action-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
         .btn { display: block; padding: 16px; text-decoration: none; border-radius: 50px; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: transform 0.2s; cursor: pointer; }
         .btn:active { transform: scale(0.98); }
         .btn-gift { background-color: white; color: var(--text-main); border: 1px solid #ccc; }
-        
-        /* BOTÓN DE CONFIRMAR CON ANIMACIÓN DE LATIDO */
-        .btn-rsvp { 
-            background-color: var(--btn-black); color: white; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            animation: pulse-btn 2s infinite; 
-        }
-        
-        @keyframes pulse-btn {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 34, 34, 0.4); }
-            70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(34, 34, 34, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 34, 34, 0); }
-        }
+        .btn-rsvp { background-color: var(--btn-black); color: white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); animation: pulse-btn 2s infinite; }
+        @keyframes pulse-btn { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 34, 34, 0.4); } 70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(34, 34, 34, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 34, 34, 0); } }
 
     </style>
 </head>
 <body>
+
+    <div id="birthday-surprise">
+        <div class="cake-emoji">🎂</div>
+        
+        <div class="b-title">¡Feliz Cumpleaños, Ramón!</div>
+        
+        <div class="text-group">
+            <p class="b-text">Fue increíble celebrar contigo esta fecha tan especial en la fiesta de ayer.</p>
+            <p class="b-text">Hoy, en tu mero día, te deseamos lo mejor del mundo. Que estos 50 años traigan salud, alegría y momentos inolvidables.</p>
+            <p style="font-size: 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin: 0;">¡Te queremos mucho!</p>
+        </div>
+
+        <div id="confetti-container"></div>
+
+        <div class="unlock-btn-pastel" onclick="openKeypad()">🔒</div>
+    </div>
+
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div id="hack-content">
+        <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+            <div class="alert-icon">⚠️</div>
+            <h1 class="hack-title">SISTEMA SATURADO</h1>
+        </div>
+        
+        <div class="hacker-msg">
+            <span class="hack-line">> DIAGNÓSTICO: La fiesta rompió el algoritmo.</span><br>
+            <span class="hack-line">> ESTADO: Niveles de diversión críticos.</span><br>
+            <br> 
+            <span class="hack-line">Estamos procesando los archivos de una noche épica... 📸</span><br>
+            <span class="hack-line">Las fotos aparecerán aquí pronto.</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+            <div class="shhh-emoji">🤫</div>
+            <div class="footer-text">TOP SECRET // CLASIFICADO</div>
+        </div>
+
+        <button class="cmd-btn" onclick="openKeypad()">[ ACCESO_ADMIN ]</button>
+    </div>
+
+    <div id="keypad-modal" class="modal-overlay">
+        <div class="modal-box" id="modal-box-inner">
+            <div class="modal-title">Desbloquear</div>
+            <div class="admin-note">Zona VIP. ¿Te sabes el código secreto? 😉</div>
+            
+            <div class="pass-display" id="pass-screen"></div>
+            
+            <div class="keypad">
+                <div class="key" onclick="press(1)">1</div>
+                <div class="key" onclick="press(2)">2</div>
+                <div class="key" onclick="press(3)">3</div>
+                <div class="key" onclick="press(4)">4</div>
+                <div class="key" onclick="press(5)">5</div>
+                <div class="key" onclick="press(6)">6</div>
+                <div class="key" onclick="press(7)">7</div>
+                <div class="key" onclick="press(8)">8</div>
+                <div class="key" onclick="press(9)">9</div>
+                <div class="key" style="color:var(--danger); border-color:var(--danger); font-size:0.9rem" onclick="clearPass()">DEL</div>
+                <div class="key" onclick="press(0)">0</div>
+                <div class="key" style="border: 1px solid var(--success); color:var(--success); font-size:0.9rem" onclick="checkPass()">OK</div>
+            </div>
+            <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6; cursor: pointer; text-decoration: underline;" onclick="closeKeypad()">Cancelar</div>
+        </div>
+    </div>
+
 
     <div id="cover-screen">
         <div class="cover-content">
@@ -185,16 +362,14 @@
     </div>
 
     <main class="container" id="main-content">
-        
         <h1>Ramón Reyes</h1>
         <p class="subtitle">¡Llegamos al 5° piso!</p>
-
         <p class="casual-text">
             Dicen que los 50 son los nuevos 30, pero con más experiencia.<br>
             Quiero festejar este medio siglo con la gente que más quiero.
         </p>
 
-        <div class="countdown">
+        <div class="countdown" id="countdown-container">
             <div class="time-box"><span class="time-num" id="d">00</span><span class="time-lbl">Días</span></div>
             <div class="time-box"><span class="time-num" id="h">00</span><span class="time-lbl">Hrs</span></div>
             <div class="time-box"><span class="time-num" id="m">00</span><span class="time-lbl">Min</span></div>
@@ -207,11 +382,10 @@
                 <div class="detail-info">Sábado 21 de Febrero</div>
                 <div class="detail-sub">A la 1:00 de la tarde</div>
             </div>
-
             <div class="detail-item">
                 <div class="detail-title">¿Dónde?</div>
                 <div class="detail-info">Tequisquiapan, Qro.</div>
-                <a href="https://www.google.com/maps/search/?api=1&query=Tequisquiapan+Queretaro" target="_blank" class="map-link">Ver Ubicación en Mapa</a>
+                <a href="https://maps.app.goo.gl/dzgAGpnVLi68uQiv9" target="_blank" class="map-link">Ver Ubicación en Mapa</a>
             </div>
         </div>
 
@@ -220,19 +394,14 @@
             <p class="casual-text" style="font-size: 1rem; margin-top: 10px; margin-bottom: 0;">
                 No hay etiqueta rigurosa, vénganse cómodos.<br>
                 <span style="display:block; margin-top:15px; color: #7f8c8d; font-style: italic; font-size: 0.95rem; border-left: 3px solid var(--gold); padding-left: 10px; text-align: left;">
-                    "Esperamos que haga calorcito, pero febrero es impredecible. 
-                    Les dejé el reporte aquí abajo 👇. Fíjense cómo va a estar el <strong style="color:#000;">SÁBADO</strong> para ver si toca lentes de sol o chamarra."
+                    "Les dejo el pronóstico aquí abajo para que elijan su vestimenta según el clima:"
                 </span>
             </p>
         </div>
 
-        <div id="weather-widget" class="weather-widget">
-            <a class="weatherwidget-io" href="https://forecast7.com/es/20d52n99d89/tequisquiapan/" data-label_1="TEQUISQUIAPAN" data-label_2="Pronóstico" data-theme="pure" >TEQUISQUIAPAN Clima</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
-        </div>
+        <div class="weather-card" id="weather-card-dynamic"><div class="loading-text">Cargando pronóstico en vivo...</div></div>
 
         <div class="detail-title" style="margin-top: 40px;">Un viaje en el tiempo</div>
-        
         <div class="gallery-section">
             <div class="row-wrapper"><div class="collage-track scroll-right" id="track-1"></div></div>
             <div class="row-wrapper"><div class="collage-track scroll-left" id="track-2"></div></div>
@@ -241,94 +410,188 @@
 
         <div class="action-buttons">
             <a href="regalos.html" class="btn btn-gift">🎁 Ver Mesa de Regalos</a>
-            
             <a href="https://wa.me/5214142196990?text=Hola!%20Confirmo%20mi%20asistencia%20para%20los%2050%20de%20Ramón." class="btn btn-rsvp">Confirmar Asistencia</a>
         </div>
-
     </main>
 
     <script>
-        /* --- 1. LÓGICA DE APERTURA --- */
+        /* ========================================================
+           LÓGICA PRINCIPAL: CONTROL DE FECHAS
+           ======================================================== */
+        (function() {
+            const today = new Date();
+            const month = today.getMonth(); // 0=Ene, 1=Feb, 2=Mar...
+            const day = today.getDate();
+
+            // CASO 1: Es 22 de Febrero (Cumpleaños)
+            if (month === 1 && day === 22) {
+                activateBirthdayMode();
+            }
+            // CASO 2: Es 23 de Febrero o después (Modo Hacker)
+            else if ((month === 1 && day >= 23) || month > 1) {
+                activateHackMode();
+            }
+            // Si no, carga normal (Invitación)
+        })();
+
+        /* --- FUNCIONES DE ACTIVACIÓN --- */
+        function activateBirthdayMode() {
+            const surprise = document.getElementById('birthday-surprise');
+            surprise.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Confeti
+            const colors = ['#C5A059', '#2c3e50', '#e74c3c', '#7f8c8d'];
+            const container = document.getElementById('confetti-container');
+            for(let i=0; i<60; i++) {
+                const c = document.createElement('div');
+                c.classList.add('confetti');
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                c.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(c);
+            }
+        }
+
+        function activateHackMode() {
+            document.body.classList.add('hack-mode');
+            document.getElementById('matrix-canvas').style.display = 'block';
+            document.getElementById('hack-content').style.display = 'flex';
+            startMatrix();
+        }
+
+        /* --- MATRIX SCRIPT --- */
+        let matrixInterval;
+        function startMatrix() {
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const letters = "01RAMON50FIESTA10"; const matrix = letters.split("");
+            const fontSize = 12; const columns = canvas.width / fontSize; const drops = [];
+            for (let x = 0; x < columns; x++) drops[x] = 1;
+
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#0aff0a"; ctx.font = fontSize + "px Courier New";
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrix[Math.floor(Math.random() * matrix.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }
+            matrixInterval = setInterval(draw, 50);
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        }
+
+        /* --- LÓGICA DE TECLADO Y DESBLOQUEO --- */
+        let currentPass = "";
+        const correctPass = "725205";
+
+        function openKeypad() {
+            document.getElementById('keypad-modal').classList.add('modal-open');
+            setTimeout(() => { document.getElementById('keypad-modal').classList.add('modal-visible'); }, 10);
+            currentPass = "";
+            updateScreen();
+        }
+
+        function closeKeypad() {
+            document.getElementById('keypad-modal').classList.remove('modal-visible');
+            setTimeout(() => { document.getElementById('keypad-modal').classList.remove('modal-open'); }, 300);
+        }
+
+        function press(num) {
+            if(currentPass.length < 6) { currentPass += num; updateScreen(); }
+        }
+        function clearPass() { currentPass = ""; updateScreen(); }
+        
+        function updateScreen() {
+            const screen = document.getElementById('pass-screen');
+            const isHack = document.body.classList.contains('hack-mode');
+            screen.innerHTML = isHack ? "*".repeat(currentPass.length) : "•".repeat(currentPass.length);
+        }
+
+        function checkPass() {
+            if(currentPass === correctPass) {
+                closeKeypad();
+                const bday = document.getElementById('birthday-surprise'); if(bday) bday.style.display = 'none';
+                const hack = document.getElementById('hack-content'); if(hack) hack.style.display = 'none';
+                const matrix = document.getElementById('matrix-canvas'); if(matrix) matrix.style.display = 'none';
+                if(matrixInterval) clearInterval(matrixInterval);
+                document.body.classList.remove('hack-mode');
+                document.body.style.overflow = 'auto';
+                alert("ACCESO CONCEDIDO. Bienvenido.");
+            } else {
+                const box = document.getElementById('modal-box-inner');
+                box.classList.add('shake');
+                const screen = document.getElementById('pass-screen');
+                screen.style.color = 'var(--danger)';
+                if(document.body.classList.contains('hack-mode')) screen.style.borderColor = 'var(--danger)';
+                setTimeout(() => {
+                    box.classList.remove('shake');
+                    screen.style.color = document.body.classList.contains('hack-mode') ? '#0aff0a' : '#333';
+                    if(document.body.classList.contains('hack-mode')) screen.style.borderColor = '#0aff0a';
+                    clearPass();
+                }, 400);
+            }
+        }
+
+        /* --- FUNCIONES NORMALES DE LA INVITACIÓN --- */
         function openInvite() {
             document.getElementById('cover-screen').classList.add('hidden');
             setTimeout(() => { 
                 document.getElementById('main-content').classList.add('visible'); 
-                
                 setTimeout(() => {
-                    document.getElementById('scroll-hint').style.display = 'flex';
-                    setTimeout(() => {
-                         document.getElementById('scroll-hint').classList.add('show-hint');
-                    }, 50);
+                    const hint = document.getElementById('scroll-hint');
+                    hint.style.display = 'flex';
+                    setTimeout(() => { hint.classList.add('show-hint'); }, 50);
                 }, 800);
-
             }, 300);
+            fetchWeather();
         }
 
-        /* --- 2. OCULTAR HINT AL SCROLLEAR --- */
+        async function fetchWeather() {
+            const card = document.getElementById('weather-card-dynamic');
+            const lat = 20.52; const lon = -99.89; const date = '2026-02-21'; 
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=America%2FMexico_City&start_date=${date}&end_date=${date}`;
+                const response = await fetch(url); const data = await response.json();
+                const max = Math.round(data.daily.temperature_2m_max[0]); const min = Math.round(data.daily.temperature_2m_min[0]);
+                const code = data.daily.weather_code[0]; let icon = '☀️'; let desc = 'Soleado';
+                if(code >= 1 && code <= 3) { icon = '⛅'; desc = 'Parcialmente Nublado'; } else if(code >= 45 && code <= 48) { icon = '🌫️'; desc = 'Neblina'; } else if(code >= 51 && code <= 67) { icon = '🌧️'; desc = 'Probabilidad de Lluvia'; } else if(code >= 80 && code <= 99) { icon = '⛈️'; desc = 'Tormenta'; }
+                card.innerHTML = `<div class="weather-icon">${icon}</div><div class="weather-data"><div class="weather-day">Sábado 21 Feb</div><div class="weather-temp">${max}°C <span style="font-size:1rem; color:#999; font-weight:normal;">/ ${min}°C</span></div><div class="weather-desc">${desc}</div></div>`;
+            } catch (error) { card.innerHTML = `<div class="weather-icon">☀️</div><div class="weather-data"><div class="weather-day">Sábado 21 Feb</div><div class="weather-temp">28°C <span style="font-size:1rem; color:#999; font-weight:normal;">Estimado</span></div><div class="weather-desc">Día Soleado</div></div>`; }
+        }
+
         window.addEventListener('scroll', function() {
             const hint = document.getElementById('scroll-hint');
-            if (window.scrollY > 50) { 
-                hint.classList.add('fade-out'); 
-            }
+            if (window.scrollY > 50) { hint.classList.add('fade-out'); }
         });
 
-        /* --- 3. CUENTA REGRESIVA --- */
-        const eventDate = new Date(2026, 1, 21, 13, 0, 0).getTime();
+        const eventDate = new Date(2026, 1, 21, 13, 0, 0).getTime(); 
         const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const gap = eventDate - now;
-            if (gap < 0) { clearInterval(timer); return; }
+            const now = new Date().getTime(); const gap = eventDate - now;
+            if (gap < 0) { 
+                clearInterval(timer);
+                document.getElementById('countdown-container').innerHTML = `<div style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); font-weight: bold; animation: pulse 1s infinite; padding: 0 10px;">¡La espera terminó!<br><span style="font-size: 1.5rem; color: #333;">Es momento de festejar 🥂</span></div>`;
+                return; 
+            }
             document.getElementById('d').innerText = Math.floor(gap / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
             document.getElementById('h').innerText = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
             document.getElementById('m').innerText = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
             document.getElementById('s').innerText = Math.floor((gap % (1000 * 60)) / 1000).toString().padStart(2, '0');
         }, 1000);
 
-        /* --- 4. GALERÍA AUTOMÁTICA --- */
-        const totalPhotos = 40;     
-        const extension = '.jpeg';  
-        
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
+        const totalPhotos = 40; const extension = '.jpeg';  
+        function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
         function populateRow(trackId) {
-            const track = document.getElementById(trackId);
-            let photos = [];
-            for (let i = 1; i <= totalPhotos; i++) photos.push(i);
-            photos = shuffleArray(photos);
-
-            const fragment = document.createDocumentFragment();
-            const loopPhotos = [...photos, ...photos]; 
-
-            loopPhotos.forEach(num => {
-                const img = document.createElement('img');
-                img.src = num + extension; 
-                img.loading = 'lazy'; 
-                img.alt = 'Recuerdo';
-                img.onerror = function() { this.style.display = 'none'; };
-                fragment.appendChild(img);
-            });
+            const track = document.getElementById(trackId); let photos = []; for (let i = 1; i <= totalPhotos; i++) photos.push(i); photos = shuffleArray(photos);
+            const fragment = document.createDocumentFragment(); const loopPhotos = [...photos, ...photos]; 
+            loopPhotos.forEach(num => { const img = document.createElement('img'); img.src = num + extension; img.loading = 'lazy'; img.alt = 'Recuerdo'; img.onerror = function() { this.style.display = 'none'; }; fragment.appendChild(img); });
             track.appendChild(fragment);
         }
-
-        populateRow('track-1');
-        populateRow('track-2');
-        populateRow('track-3');
-
-        /* --- 5. CLIMA --- */
-        (function() {
-            const now = new Date();
-            const targetDate = new Date(2026, 1, 15);
-            if (now >= targetDate) {
-                const w = document.getElementById('weather-widget');
-                if(w) w.style.display = 'block';
-            }
-        })();
+        populateRow('track-1'); populateRow('track-2'); populateRow('track-3');
     </script>
 </body>
 </html>
