@@ -32,10 +32,8 @@
             text-align: center;
         }
 
-        /* Clase para ocultar scroll en modos especiales */
-        body.locked { overflow: hidden; height: 100vh; }
         /* Clase para modo hacker */
-        body.hack-active { background-color: #000000; }
+        body.hack-mode { background-color: #000000 !important; font-family: 'Courier New', monospace !important; overflow: hidden !important; }
 
         /* =========================================
            1. SORPRESA CUMPLEAÑOS (DÍA 22)
@@ -51,8 +49,6 @@
         .b-text { font-size: 1rem; color: #666; margin: 15px 0; max-width: 90%; line-height: 1.5; }
         .cake-emoji { font-size: 5rem; margin: 0; animation: bounceCake 2s infinite; }
         .confetti { position: absolute; width: 10px; height: 10px; background-color: #f2d74e; top: -10vh; animation: fall 5s linear infinite; pointer-events: none; }
-        
-        /* Candado Pastel */
         .unlock-icon-pastel { font-size: 2rem; opacity: 0.3; cursor: pointer; margin-top: 10px; }
 
         /* =========================================
@@ -420,14 +416,19 @@
             } catch(e) { console.log(e); }
         }
 
-        // Cuenta Regresiva
+        // Cuenta Regresiva (MENSAJE RESTAURADO)
         const target = new Date(2026, 1, 21, 13, 0, 0).getTime();
         const timer = setInterval(() => {
             const now = new Date().getTime();
             const gap = target - now;
             if(gap < 0) {
                 clearInterval(timer);
-                document.getElementById('countdown-container').innerHTML = "<div style='font-family:Playfair Display; font-size:1.5rem; font-weight:bold; color:#C5A059'>¡ES HOY! 🥂</div>";
+                document.getElementById('countdown-container').innerHTML = `
+                    <div style="font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); font-weight: bold; animation: pulse 1s infinite; padding: 0 10px;">
+                        ¡La espera terminó!<br>
+                        <span style="font-size: 1.5rem; color: #333;">Es momento de festejar 🥂</span>
+                    </div>
+                `;
                 return;
             }
             document.getElementById('d').innerText = Math.floor(gap / (1000*60*60*24));
@@ -436,21 +437,36 @@
             document.getElementById('s').innerText = Math.floor((gap % (1000*60)) / 1000);
         }, 1000);
 
-        // Galeria
-        const track = document.getElementById('track-1');
-        if(track) {
-            // Llenar galeria dummy
-            for(let i=0; i<10; i++) {
-                let img = document.createElement('img');
-                img.src = 'https://via.placeholder.com/150'; // Placeholder
-                track.appendChild(img);
-            }
-            // Duplicar para efecto infinito (simplificado)
-            document.getElementById('track-2').innerHTML = track.innerHTML;
-            document.getElementById('track-3').innerHTML = track.innerHTML;
-        }
-        // Nota: Asegúrate de poner tus fotos reales en la carpeta y descomentar tu código de galería original si ya las tienes.
+        // Galeria (Funcional para 40 fotos)
+        const totalPhotos = 40; 
+        const extension = '.jpeg';
+        function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
         
+        function populateRow(trackId) {
+            const track = document.getElementById(trackId);
+            if(!track) return;
+            
+            let photos = [];
+            for (let i = 1; i <= totalPhotos; i++) photos.push(i);
+            photos = shuffleArray(photos);
+
+            const fragment = document.createDocumentFragment();
+            const loopPhotos = [...photos, ...photos]; 
+
+            loopPhotos.forEach(num => {
+                const img = document.createElement('img');
+                img.src = num + extension; 
+                img.loading = 'lazy'; 
+                img.alt = 'Recuerdo';
+                img.onerror = function() { this.style.display = 'none'; };
+                fragment.appendChild(img);
+            });
+            track.appendChild(fragment);
+        }
+
+        populateRow('track-1');
+        populateRow('track-2');
+        populateRow('track-3');
     </script>
 </body>
 </html>
