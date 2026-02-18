@@ -45,14 +45,12 @@
            1. ESTILOS DE LA SORPRESA (DIA 22 - PASTEL)
            ========================================= */
         #birthday-surprise {
-            display: none; /* Se activa con JS */
+            display: none; 
             position: fixed; top: 0; left: 0; width: 100%; 
             height: 100vh; height: 100dvh; 
             background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
             z-index: 100000;
-            flex-direction: column; 
-            justify-content: space-evenly; 
-            align-items: center;
+            flex-direction: column; justify-content: space-evenly; align-items: center;
             color: var(--text-main); padding: 20px; 
         }
 
@@ -74,7 +72,7 @@
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 100002;
             flex-direction: column; justify-content: space-evenly; align-items: center;
             text-align: center; padding: 20px;
-            background: transparent; /* IMPORTANTE: Transparente para ver el Matrix */
+            background: transparent; 
         }
         
         .alert-icon { 
@@ -128,30 +126,32 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
         
-        /* ESTILOS FORZADOS PARA MODO HACKER (Corrección de colores) */
+        /* --- ESTILOS ESPECÍFICOS MODO HACKER (CORREGIDOS) --- */
         .hack-mode .modal-box {
             background: #000000 !important; 
-            border: 1px solid var(--hacker-green) !important; 
+            border: 2px solid var(--hacker-green) !important; 
             border-radius: 0 !important; 
-            box-shadow: 0 0 20px rgba(10, 255, 10, 0.2) !important;
+            box-shadow: 0 0 20px rgba(10, 255, 10, 0.4) !important;
         }
         .hack-mode .modal-title { font-family: 'Courier New', monospace !important; color: var(--hacker-green) !important; }
         .hack-mode .admin-note { color: white !important; font-family: 'Courier New', monospace !important; }
         
-        /* CORRECCIÓN: Números visibles en verde */
+        /* Pantalla de números VISIBLE en hack mode */
         .hack-mode .pass-display { 
             background: #000000 !important; 
             border: none !important; 
             border-bottom: 2px solid var(--hacker-green) !important; 
             color: var(--hacker-green) !important; 
             font-family: 'Courier New', monospace !important;
+            box-shadow: none !important;
         }
         
         .hack-mode .key { 
             background: #000000 !important; 
-            border: 1px solid #333 !important; 
+            border: 1px solid var(--hacker-green) !important; 
             color: white !important; 
             font-family: 'Courier New', monospace !important; 
+            border-radius: 0 !important;
         }
         .hack-mode .key:active { background: var(--hacker-green) !important; color: black !important; }
         .hack-mode .key-action { border-color: white !important; color: white !important; }
@@ -455,7 +455,7 @@
         function activateHackMode() {
             document.body.classList.add('hack-mode');
             
-            // CORRECCION CRITICA: Ocultar capas inferiores de la invitacion original
+            // CORRECCION CRITICA: Ocultar capas inferiores
             const cover = document.getElementById('cover-screen'); if(cover) cover.style.display='none';
             const main = document.getElementById('main-content'); if(main) main.style.display='none';
             
@@ -519,15 +519,12 @@
             if(currentPass === correctPass) {
                 closeKeypad();
                 
-                // Desbloqueo general
                 const bday = document.getElementById('birthday-surprise'); if(bday) bday.style.display = 'none';
-                
-                // Desbloqueo Hack Mode: Revertir todo
                 const hack = document.getElementById('hack-content'); if(hack) hack.style.display = 'none';
                 const matrix = document.getElementById('matrix-canvas'); if(matrix) matrix.style.display = 'none';
                 if(matrixInterval) clearInterval(matrixInterval);
                 
-                // Restaurar visibilidad de invitacion original
+                // RESTAURAR INVITACION
                 const cover = document.getElementById('cover-screen'); if(cover) cover.style.display='flex';
                 const main = document.getElementById('main-content'); if(main) main.style.display='block';
                 
@@ -540,7 +537,6 @@
                 box.classList.add('shake');
                 const screen = document.getElementById('pass-screen');
                 
-                // Colores error dinámicos
                 const isHack = document.body.classList.contains('hack-mode');
                 screen.style.color = 'var(--danger)';
                 if(isHack) screen.style.borderColor = 'var(--danger)';
