@@ -38,7 +38,7 @@
             font-family: 'Courier New', Courier, monospace !important;
             color: #ffffff !important;
             height: 100vh; height: 100dvh;
-            overflow: hidden;
+            overflow: hidden !important;
         }
 
         /* =========================================
@@ -84,6 +84,7 @@
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 100002;
             flex-direction: column; justify-content: space-evenly; align-items: center;
             text-align: center; padding: 20px;
+            background-color: black; /* Asegura fondo negro */
         }
         
         /* ICONO CON ANIMACIÓN DE PULSO (ZOOM) */
@@ -139,16 +140,32 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
         
-        /* Estilo especial del modal cuando estamos en modo hack */
+        /* CORRECCIÓN: Estilos Forzados para Modo Hacker */
         .hack-mode .modal-box {
-            background: black; border: 1px solid var(--hacker-green); border-radius: 0; box-shadow: 0 0 20px rgba(10, 255, 10, 0.2);
+            background: #000000 !important; 
+            border: 1px solid var(--hacker-green) !important; 
+            border-radius: 0 !important; 
+            box-shadow: 0 0 20px rgba(10, 255, 10, 0.2) !important;
         }
-        .hack-mode .modal-title { font-family: 'Courier New', monospace; color: var(--hacker-green); }
-        .hack-mode .admin-note { color: white; font-family: 'Courier New', monospace; }
-        .hack-mode .pass-display { background: black; border: none; border-bottom: 2px solid var(--hacker-green); color: var(--hacker-green); }
-        .hack-mode .key { background: black; border: 1px solid #333; color: white; font-family: 'Courier New', monospace; }
-        .hack-mode .key:active { background: var(--hacker-green); color: black; }
-        .hack-mode .key-action { border-color: white; color: white; }
+        .hack-mode .modal-title { font-family: 'Courier New', monospace !important; color: var(--hacker-green) !important; }
+        .hack-mode .admin-note { color: white !important; font-family: 'Courier New', monospace !important; }
+        
+        /* CORRECCIÓN: Pantalla de números visible */
+        .hack-mode .pass-display { 
+            background: #000000 !important; 
+            border: none !important; 
+            border-bottom: 2px solid var(--hacker-green) !important; 
+            color: var(--hacker-green) !important; 
+        }
+        
+        .hack-mode .key { 
+            background: #000000 !important; 
+            border: 1px solid #333 !important; 
+            color: white !important; 
+            font-family: 'Courier New', monospace !important; 
+        }
+        .hack-mode .key:active { background: var(--hacker-green) !important; color: black !important; }
+        .hack-mode .key-action { border-color: white !important; color: white !important; }
 
         .modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 5px; }
         .admin-note { font-size: 0.9rem; color: #999; margin-bottom: 20px; font-style: italic; }
@@ -414,7 +431,7 @@
 
     <script>
         /* ========================================================
-           LÓGICA PRINCIPAL: CONTROL DE FECHAS (ROBUSTO)
+           LÓGICA PRINCIPAL: CONTROL DE FECHAS
            ======================================================== */
         (function() {
             const today = new Date();
@@ -422,12 +439,11 @@
             const month = today.getMonth(); // 0=Ene, 1=Feb
             const day = today.getDate();
 
-            // 1. DIA DE CUMPLEAÑOS (Exactamente 22 Feb 2026)
+            // CASO 1: Es 22 de Febrero (Cumpleaños)
             if (year === 2026 && month === 1 && day === 22) {
                 activateBirthdayMode();
             }
-            // 2. MODO HACKER (23 Feb 2026 en adelante)
-            // Se activa si es 2026 y (es Feb 23+ O es Marzo en adelante) O si es un año > 2026
+            // CASO 2: Es 23 de Febrero o después (Modo Hacker)
             else if (year > 2026 || (year === 2026 && (month > 1 || (month === 1 && day >= 23)))) {
                 activateHackMode();
             }
@@ -456,6 +472,11 @@
 
         function activateHackMode() {
             document.body.classList.add('hack-mode');
+            
+            // CORRECCION CRITICA: Ocultar capas inferiores de la invitacion original
+            const cover = document.getElementById('cover-screen'); if(cover) cover.style.display='none';
+            const main = document.getElementById('main-content'); if(main) main.style.display='none';
+            
             document.getElementById('matrix-canvas').style.display = 'block';
             document.getElementById('hack-content').style.display = 'flex';
             startMatrix();
@@ -515,23 +536,37 @@
         function checkPass() {
             if(currentPass === correctPass) {
                 closeKeypad();
+                
+                // Desbloqueo general
                 const bday = document.getElementById('birthday-surprise'); if(bday) bday.style.display = 'none';
+                
+                // Desbloqueo Hack Mode: Revertir todo
                 const hack = document.getElementById('hack-content'); if(hack) hack.style.display = 'none';
                 const matrix = document.getElementById('matrix-canvas'); if(matrix) matrix.style.display = 'none';
                 if(matrixInterval) clearInterval(matrixInterval);
+                
+                // Restaurar visibilidad de invitacion original
+                const cover = document.getElementById('cover-screen'); if(cover) cover.style.display='flex';
+                const main = document.getElementById('main-content'); if(main) main.style.display='block';
+                
                 document.body.classList.remove('hack-mode');
                 document.body.style.overflow = 'auto';
+                
                 alert("ACCESO CONCEDIDO. Bienvenido.");
             } else {
                 const box = document.getElementById('modal-box-inner');
                 box.classList.add('shake');
                 const screen = document.getElementById('pass-screen');
+                
+                // Colores error dinámicos
+                const isHack = document.body.classList.contains('hack-mode');
                 screen.style.color = 'var(--danger)';
-                if(document.body.classList.contains('hack-mode')) screen.style.borderColor = 'var(--danger)';
+                if(isHack) screen.style.borderColor = 'var(--danger)';
+                
                 setTimeout(() => {
                     box.classList.remove('shake');
-                    screen.style.color = document.body.classList.contains('hack-mode') ? '#0aff0a' : '#333';
-                    if(document.body.classList.contains('hack-mode')) screen.style.borderColor = '#0aff0a';
+                    screen.style.color = isHack ? '#0aff0a' : '#333';
+                    if(isHack) screen.style.borderColor = '#0aff0a';
                     clearPass();
                 }, 400);
             }
