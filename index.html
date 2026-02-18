@@ -40,7 +40,6 @@
             background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
             z-index: 99999; flex-direction: column; justify-content: space-evenly; align-items: center; padding: 20px;
         }
-        /* AJUSTE: Texto más grande y centrado */
         .b-title { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); margin: 0; line-height: 1.1; animation: popIn 1s ease forwards; }
         .text-group { text-align: center; width: 100%; }
         .b-text { font-size: 1.3rem; color: #666; margin: 15px auto; max-width: 90%; line-height: 1.4; }
@@ -59,14 +58,13 @@
             z-index: 99999; background-color: black; flex-direction: column; justify-content: space-evenly; align-items: center;
             padding: 20px; font-family: 'Courier New', monospace; color: white;
         }
-        #matrix-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.4; z-index: -1; }
+        /* AJUSTE: Opacidad aumentada a 0.8 para que se vean más los números */
+        #matrix-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8; z-index: -1; }
         
         .alert-icon { font-size: 4rem; color: var(--hacker-green); animation: pulseAlert 1.5s infinite; text-shadow: 0 0 15px rgba(255,255,255,0.5); }
-        /* AJUSTE: Título Hack más grande */
         .hack-title { font-size: 2rem; color: var(--hacker-green); border-bottom: 2px solid var(--hacker-green); display: inline-block; background: rgba(0,0,0,0.8); padding: 5px; }
         
         .hacker-msg { line-height: 2.8; }
-        /* AJUSTE: Texto Hack más grande */
         .hacker-msg span {
             display: inline; background: rgba(0,0,0,0.85); padding: 5px 10px; border: 1px solid rgba(10,255,10,0.3);
             font-size: 1.1rem; line-height: 2.2; -webkit-box-decoration-break: clone; box-decoration-break: clone;
@@ -117,13 +115,13 @@
         .detail-info { font-size: 1.3rem; margin: 5px 0; font-family: 'Playfair Display', serif; }
         .weather-card { background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%); border: 1px solid #eee; border-radius: 12px; padding: 20px; margin: 20px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 20px; }
         
-        /* GALERÍA (ESTILO ORIGINAL 3 FILAS) */
+        /* GALERÍA */
         .gallery-section { position: relative; width: 100%; overflow: hidden; background-color: #fafafa; padding: 20px 0; margin: 40px 0; }
         .row-wrapper { position: relative; width: 100%; display: flex; overflow: hidden; margin-bottom: 12px; }
         .collage-track { display: flex; width: max-content; align-items: center; }
         .collage-track img { height: 110px; margin: 0 5px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         @media (min-width: 768px) { .collage-track img { height: 180px; margin: 0 10px; } }
-        /* ANIMACIONES LENTAS RESTAURADAS (400s) */
+        /* VELOCIDAD LENTA 400s */
         .scroll-left { animation: scrollLeft 400s linear infinite; }
         .scroll-right { animation: scrollRight 400s linear infinite; }
         @keyframes scrollLeft { to { transform: translateX(-50%); } }
@@ -193,7 +191,7 @@
         <div class="text-group">
             <p class="b-text">Fue increíble celebrar contigo ayer.</p>
             <p class="b-text">Hoy, en tu mero día, te deseamos lo mejor.</p>
-            <p style="font-size: 1.2rem; color: var(--gold); font-weight: bold; letter-spacing: 2px;">¡TE QUEREMOS!</p>
+            <p style="font-size: 1.3rem; color: var(--gold); font-weight: bold; letter-spacing: 2px;">¡TE QUEREMOS!</p>
         </div>
         <div id="confetti-container" style="position:absolute; width:100%; height:100%; top:0; left:0; z-index:-1; overflow:hidden;"></div>
         <div class="unlock-icon-pastel" onclick="openKeypad('normal')">🔒</div>
@@ -314,8 +312,24 @@
             try {
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=20.52&longitude=-99.89&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=America%2FMexico_City&start_date=2026-02-21&end_date=2026-02-21');
                 const d = await res.json();
-                document.getElementById('weather-card-dynamic').innerHTML = `<div style="font-size:3rem">☀️</div><div><div style="font-weight:bold">Sábado 21 Feb</div><div style="font-size:2rem; font-weight:bold">${Math.round(d.daily.temperature_2m_max[0])}°C</div></div>`;
-            } catch(e) {}
+                const max = Math.round(d.daily.temperature_2m_max[0]);
+                const min = Math.round(d.daily.temperature_2m_min[0]);
+                let icon = '☀️';
+                const code = d.daily.weather_code[0];
+                if(code > 3) icon = '⛅';
+                if(code >= 45 && code <= 48) icon = '🌫️';
+                if(code >= 51) icon = '🌧️';
+
+                document.getElementById('weather-card-dynamic').innerHTML = `
+                    <div style="font-size:3rem">${icon}</div>
+                    <div style="text-align:left">
+                        <div style="font-weight:bold; font-size:0.8rem; text-transform:uppercase; color:#C5A059; letter-spacing:1px">Sábado 21 Feb</div>
+                        <div style="font-family:'Playfair Display', serif; font-size:2rem; font-weight:bold">
+                            ${max}°C <span style="font-size:1.2rem; color:#999; font-weight:normal">/ ${min}°C</span>
+                        </div>
+                        <div style="font-size:0.9rem; color:#666">Tequisquiapan</div>
+                    </div>`;
+            } catch(e) { console.log(e); }
         }
 
         const target = new Date(2026, 1, 21, 13, 0, 0).getTime();
