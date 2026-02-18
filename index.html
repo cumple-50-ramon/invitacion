@@ -47,31 +47,21 @@
         #birthday-surprise {
             display: none; /* Se activa con JS */
             position: fixed; top: 0; left: 0; width: 100%; 
-            height: 100vh; height: 100dvh; /* Altura dinámica real */
+            height: 100vh; height: 100dvh; 
             background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
             z-index: 100000;
             flex-direction: column; 
-            justify-content: space-evenly; /* Distribución perfecta en móvil */
+            justify-content: space-evenly; 
             align-items: center;
             color: var(--text-main); padding: 20px; 
         }
 
         .content-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; }
-        
-        .b-title {
-            font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold);
-            margin: 0; animation: popIn 1s ease forwards; line-height: 1.2;
-        }
-        /* Agrupar textos para control vertical */
+        .b-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); margin: 0; animation: popIn 1s ease forwards; line-height: 1.2; }
         .text-group { display: flex; flex-direction: column; gap: 15px; max-width: 90%; }
-        
         .b-text { font-size: 1rem; color: #666; margin: 0; line-height: 1.5; animation: fadeIn 2s ease forwards; }
         .cake-emoji { font-size: 5rem; margin: 0; animation: bounceCake 2s infinite; }
-        
-        .confetti {
-            position: absolute; width: 10px; height: 10px; background-color: #f2d74e;
-            top: -10vh; animation: fall 5s linear infinite; pointer-events: none;
-        }
+        .confetti { position: absolute; width: 10px; height: 10px; background-color: #f2d74e; top: -10vh; animation: fall 5s linear infinite; pointer-events: none; }
 
         /* =========================================
            2. ESTILOS DEL HACKEO (DIA 23+ - MATRIX)
@@ -84,10 +74,9 @@
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 100002;
             flex-direction: column; justify-content: space-evenly; align-items: center;
             text-align: center; padding: 20px;
-            background-color: black; /* Asegura fondo negro */
+            background: transparent; /* IMPORTANTE: Transparente para ver el Matrix */
         }
         
-        /* ICONO CON ANIMACIÓN DE PULSO (ZOOM) */
         .alert-icon { 
             font-size: 3.5rem; margin: 0; text-shadow: 0 0 15px rgba(255,255,255,0.8); color: var(--hacker-green);
             animation: pulseAlert 1.5s infinite ease-in-out; 
@@ -103,7 +92,6 @@
 
         .hacker-msg { display: block; width: 100%; max-width: 500px; line-height: 2.6; font-family: 'Courier New', monospace; }
 
-        /* Estilo de fondo ajustado al texto (Subtítulos) */
         .hack-line {
             display: inline; background: rgba(0, 0, 0, 0.85); padding: 5px 8px;
             border: 1px solid rgba(10, 255, 10, 0.3); backdrop-filter: blur(2px);
@@ -140,7 +128,7 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
         
-        /* CORRECCIÓN: Estilos Forzados para Modo Hacker */
+        /* ESTILOS FORZADOS PARA MODO HACKER (Corrección de colores) */
         .hack-mode .modal-box {
             background: #000000 !important; 
             border: 1px solid var(--hacker-green) !important; 
@@ -150,12 +138,13 @@
         .hack-mode .modal-title { font-family: 'Courier New', monospace !important; color: var(--hacker-green) !important; }
         .hack-mode .admin-note { color: white !important; font-family: 'Courier New', monospace !important; }
         
-        /* CORRECCIÓN: Pantalla de números visible */
+        /* CORRECCIÓN: Números visibles en verde */
         .hack-mode .pass-display { 
             background: #000000 !important; 
             border: none !important; 
             border-bottom: 2px solid var(--hacker-green) !important; 
             color: var(--hacker-green) !important; 
+            font-family: 'Courier New', monospace !important;
         }
         
         .hack-mode .key { 
@@ -199,14 +188,7 @@
         @keyframes popIn { 0% {transform: scale(0);} 80% {transform: scale(1.1);} 100% {transform: scale(1);} }
         @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
         @keyframes bounceCake { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-20px) rotate(5deg);} }
-        
-        /* Animación de latido para el icono hack */
-        @keyframes pulseAlert {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); text-shadow: 0 0 25px rgba(10, 255, 10, 0.8); }
-            100% { transform: scale(1); }
-        }
-        
+        @keyframes pulseAlert { 0% { transform: scale(1); } 50% { transform: scale(1.15); text-shadow: 0 0 25px rgba(10, 255, 10, 0.8); } 100% { transform: scale(1); } }
         @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
 
