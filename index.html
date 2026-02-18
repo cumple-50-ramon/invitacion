@@ -116,7 +116,6 @@
         @keyframes popIn { 0% {transform: scale(0);} 80% {transform: scale(1.1);} 100% {transform: scale(1);} }
         @keyframes bounceCake { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-20px) rotate(5deg);} }
         @keyframes pulseAlert { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.15);} }
-        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
 
         /* =========================================
@@ -139,22 +138,32 @@
         .casual-text { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
         
         .countdown { display: flex; justify-content: center; gap: 15px; margin: 40px 0; }
+        .time-box { min-width: 55px; }
         .time-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); font-weight: bold; display: block; }
         .time-lbl { font-size: 0.65rem; text-transform: uppercase; color: #999; }
+        .ticking { animation: pulse 1s infinite; }
+        @keyframes pulse { 0% {opacity:1;} 50% {opacity:0.8;} 100% {opacity:1;} }
         
         .details-box { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 40px 0; margin: 30px 0; }
         .detail-title { font-weight: bold; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px; color: var(--gold); }
         .detail-info { font-size: 1.3rem; margin: 5px 0; font-family: 'Playfair Display', serif; }
-        
+        .map-link { display: inline-block; margin-top: 8px; color: var(--text-light); text-decoration: underline; font-size: 0.9rem; }
+
         .weather-card { background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%); border: 1px solid #eee; border-radius: 12px; padding: 20px; margin: 20px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 20px; }
         .weather-temp { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: bold; }
         
-        .gallery-section { position: relative; width: 100%; overflow: hidden; background: #fafafa; padding: 20px 0; margin: 40px 0; }
-        .collage-track { display: flex; width: max-content; }
-        .collage-track img { height: 110px; margin: 0 5px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .scroll-left { animation: scrollLeft 60s linear infinite; }
-        .scroll-right { animation: scrollRight 60s linear infinite; }
-        @keyframes scrollLeft { to { transform: translateX(-50%); } }
+        /* GALERÍA (ESTILO LENTO Y ORIGINAL) */
+        .gallery-section { position: relative; width: 100%; overflow: hidden; background-color: #fafafa; padding: 20px 0; margin: 40px 0; pointer-events: none; user-select: none; }
+        .gallery-section::before { content: ''; position: absolute; top: 0; left: 0; width: 10%; height: 100%; z-index: 2; background: linear-gradient(to right, #fafafa, rgba(250,250,250,0)); }
+        .gallery-section::after { content: ''; position: absolute; top: 0; right: 0; width: 10%; height: 100%; z-index: 2; background: linear-gradient(to left, #fafafa, rgba(250,250,250,0)); }
+        .row-wrapper { position: relative; width: 100%; display: flex; overflow: hidden; margin-bottom: 12px; }
+        .collage-track { display: flex; flex-wrap: nowrap; width: max-content; align-items: center; will-change: transform; }
+        .collage-track img { height: 110px; width: auto; object-fit: cover; border-radius: 4px; margin: 0 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); background-color: #eee; }
+        @media (min-width: 768px) { .collage-track img { height: 180px; margin: 0 10px; } }
+        /* ANIMACIONES LENTAS RESTAURADAS (400s) */
+        .scroll-left { animation: scrollLeft 400s linear infinite; }
+        .scroll-right { animation: scrollRight 400s linear infinite; }
+        @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         
         .btn { display: block; padding: 16px; text-decoration: none; border-radius: 50px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
@@ -363,7 +372,7 @@
                 document.body.classList.remove('hack-mode');
                 document.body.classList.remove('locked');
                 
-                alert("ACCESO CONCEDIDO");
+                alert("ACCESO CONCEDIDO. Bienvenido.");
             } else {
                 // ERROR
                 const box = document.querySelector('.modal-box');
@@ -437,7 +446,7 @@
             document.getElementById('s').innerText = Math.floor((gap % (1000*60)) / 1000);
         }, 1000);
 
-        // Galeria (Funcional para 40 fotos)
+        // Galeria (Restaurada para leer 40 fotos locales)
         const totalPhotos = 40; 
         const extension = '.jpeg';
         function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
