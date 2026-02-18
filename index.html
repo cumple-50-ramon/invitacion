@@ -281,18 +281,16 @@
 <body>
 
     <div id="birthday-surprise">
-        <div class="cake-emoji">🎂</div>
-        
-        <div class="b-title">¡Feliz Cumpleaños, Ramón!</div>
-        
-        <div class="text-group">
-            <p class="b-text">Fue increíble celebrar contigo esta fecha tan especial en la fiesta de ayer.</p>
-            <p class="b-text">Hoy, en tu mero día, te deseamos lo mejor del mundo. Que estos 50 años traigan salud, alegría y momentos inolvidables.</p>
-            <p style="font-size: 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin: 0;">¡Te queremos mucho!</p>
+        <div class="content-wrapper">
+            <div class="cake-emoji">🎂</div>
+            <div class="b-title">¡Feliz Cumpleaños, Ramón!</div>
+            <div class="text-group">
+                <p class="b-text">Fue increíble celebrar contigo esta fecha tan especial en la fiesta de ayer.</p>
+                <p class="b-text">Hoy, en tu mero día, te deseamos lo mejor del mundo. Que estos 50 años traigan salud, alegría y momentos inolvidables.</p>
+                <p style="font-size: 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin: 0;">¡Te queremos mucho!</p>
+            </div>
         </div>
-
         <div id="confetti-container"></div>
-
         <div class="unlock-btn-pastel" onclick="openKeypad()">🔒</div>
     </div>
 
@@ -416,19 +414,21 @@
 
     <script>
         /* ========================================================
-           LÓGICA PRINCIPAL: CONTROL DE FECHAS
+           LÓGICA PRINCIPAL: CONTROL DE FECHAS (ROBUSTO)
            ======================================================== */
         (function() {
             const today = new Date();
-            const month = today.getMonth(); // 0=Ene, 1=Feb, 2=Mar...
+            const year = today.getFullYear();
+            const month = today.getMonth(); // 0=Ene, 1=Feb
             const day = today.getDate();
 
-            // CASO 1: Es 22 de Febrero (Cumpleaños)
-            if (month === 1 && day === 22) {
+            // 1. DIA DE CUMPLEAÑOS (Exactamente 22 Feb 2026)
+            if (year === 2026 && month === 1 && day === 22) {
                 activateBirthdayMode();
             }
-            // CASO 2: Es 23 de Febrero o después (Modo Hacker)
-            else if ((month === 1 && day >= 23) || month > 1) {
+            // 2. MODO HACKER (23 Feb 2026 en adelante)
+            // Se activa si es 2026 y (es Feb 23+ O es Marzo en adelante) O si es un año > 2026
+            else if (year > 2026 || (year === 2026 && (month > 1 || (month === 1 && day >= 23)))) {
                 activateHackMode();
             }
             // Si no, carga normal (Invitación)
