@@ -96,7 +96,6 @@
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-10px);} 75% {transform: translateX(10px);} }
 
         /* --- 4. INVITACIÓN ORIGINAL --- */
-        #original-invite { transition: opacity 0.5s; }
         #cover-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 500; background: #111; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s; }
         .enter-btn { background: transparent; border: 2px solid var(--gold); color: var(--gold); padding: 15px 50px; font-size: 1.1rem; cursor: pointer; margin-top: 25px; font-weight: bold; text-transform: uppercase;}
         .container { max-width: 600px; margin: 0 auto; padding: 40px 20px 100px; opacity: 0; transform: translateY(20px); transition: all 1s ease; }
@@ -112,14 +111,15 @@
         .detail-info { font-size: 1.3rem; margin: 5px 0; font-family: 'Playfair Display', serif; }
         .weather-card { background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%); border: 1px solid #eee; border-radius: 12px; padding: 20px; margin: 20px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 20px; }
         
-        /* GALERÍA (ESTILO ORIGINAL 3 FILAS) */
-        .gallery-section { position: relative; width: 100%; overflow: hidden; background-color: #fafafa; padding: 20px 0; margin: 40px 0; }
+        /* GALERÍA */
+        .gallery-section { position: relative; width: 100%; overflow: hidden; background-color: #fafafa; padding: 20px 0; margin: 40px 0; pointer-events: none; }
         .row-wrapper { position: relative; width: 100%; display: flex; overflow: hidden; margin-bottom: 12px; }
-        .collage-track { display: flex; width: max-content; align-items: center; }
+        .collage-track { display: flex; width: max-content; align-items: center; will-change: transform; }
         .collage-track img { height: 110px; margin: 0 5px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        @media (min-width: 768px) { .collage-track img { height: 180px; margin: 0 10px; } }
         .scroll-left { animation: scrollLeft 400s linear infinite; }
         .scroll-right { animation: scrollRight 400s linear infinite; }
-        @keyframes scrollLeft { to { transform: translateX(-50%); } }
+        @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes scrollRight { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         
         .btn { display: block; padding: 16px; text-decoration: none; border-radius: 50px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
@@ -130,11 +130,9 @@
 
     <div id="original-invite">
         <div id="cover-screen">
-            <div style="color: white; text-align: center;">
-                <h1 style="color: white; margin: 0;">Ramón</h1>
-                <p style="letter-spacing: 4px; font-size: 1.5rem; text-transform: uppercase;">50 Años</p>
-                <button class="enter-btn" onclick="openInvite()">Entrar</button>
-            </div>
+            <h1 style="color: white; margin: 0;">Ramón</h1>
+            <p style="letter-spacing: 4px; font-size: 1.5rem; text-transform: uppercase; color: white;">50 Años</p>
+            <button class="enter-btn" onclick="openInvite()">Entrar</button>
         </div>
 
         <main class="container" id="main-content">
@@ -146,7 +144,7 @@
                 <div class="time-box"><span class="time-num" id="d">00</span><span class="time-lbl">Días</span></div>
                 <div class="time-box"><span class="time-num" id="h">00</span><span class="time-lbl">Hrs</span></div>
                 <div class="time-box"><span class="time-num" id="m">00</span><span class="time-lbl">Min</span></div>
-                <div class="time-box"><span class="time-num" id="s">00</span><span class="time-lbl">Seg</span></div>
+                <div class="time-box"><span class="time-num ticking" id="s">00</span><span class="time-lbl">Seg</span></div>
             </div>
 
             <div class="details-box">
@@ -190,7 +188,7 @@
             <span class="hack-line">> DIAGNÓSTICO: La fiesta rompió el algoritmo.</span><br>
             <span class="hack-line">> ESTADO: Niveles de diversión críticos.</span><br>
             <div style="height:10px"></div>
-            <span class="hack-line">Recuperando archivos de una noche épica... 📸</span><br>
+            <span class="hack-line">Estamos procesando los archivos de una noche épica... 📸</span><br>
             <span class="hack-line">Las fotos aparecerán aquí pronto.</span>
         </div>
         <div style="font-size:3rem;">🤫</div>
@@ -278,6 +276,7 @@
                 document.getElementById('birthday-surprise').style.display = 'none';
                 document.getElementById('hack-layer').style.display = 'none';
                 document.getElementById('original-invite').style.display = 'block';
+                document.body.classList.remove('hack-mode');
                 document.body.style.overflow = 'auto';
                 alert("ACCESO CONCEDIDO");
             } else {
@@ -294,7 +293,7 @@
 
         async function fetchWeather() {
             try {
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=20.52&longitude=-99.89&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=America%2FMexico_City&start_date=2026-02-21&end_date=2026-02-21');
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=20.52&longitude=-99.89&daily=weather_code,temperature_2m_max&timezone=America%2FMexico_City&start_date=2026-02-21&end_date=2026-02-21');
                 const d = await res.json();
                 document.getElementById('weather-card-dynamic').innerHTML = `<div style="font-size:3rem">☀️</div><div><div style="font-weight:bold">Sábado 21 Feb</div><div style="font-size:2rem; font-weight:bold">${Math.round(d.daily.temperature_2m_max[0])}°C</div></div>`;
             } catch(e) {}
@@ -315,12 +314,19 @@
 
         function populateRow(id) {
             const t = document.getElementById(id); if(!t) return;
-            for(let i=1; i<=40; i++) {
-                const img = document.createElement('img'); img.src = i + '.jpeg';
+            let photos = [];
+            for(let i=1; i<=40; i++) photos.push(i);
+            // ALGORITMO ALEATORIO
+            for (let i = photos.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [photos[i], photos[j]] = [photos[j], photos[i]];
+            }
+            photos.forEach(num => {
+                const img = document.createElement('img'); img.src = num + '.jpeg';
                 img.onerror = function() { this.style.display='none'; };
                 t.appendChild(img);
-            }
-            t.innerHTML += t.innerHTML;
+            });
+            t.innerHTML += t.innerHTML; // Loop infinito
         }
         populateRow('track-1'); populateRow('track-2'); populateRow('track-3');
     </script>
